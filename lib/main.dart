@@ -49,16 +49,16 @@ class _DigestObserver extends ProviderObserver {
   }
 }
 
-class OpenBudgetApp extends StatelessWidget {
+class OpenBudgetApp extends ConsumerWidget {
   const OpenBudgetApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
       title: 'Open Budget',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      routerConfig: AppRouter.router,
+      routerConfig: AppRouter.router(ref),
     );
   }
 }
