@@ -77,9 +77,10 @@ class DatabaseService {
   Future<void> clearAllData() async {
     await _transactionBox.clear();
     await _budgetBox.clear();
+    await _categoryBox.clear();
     await _goalBox.clear();
     await _progressBox.clear();
-    // Keep categories and settings
+    // Keep settings for user preferences
   }
 
   Future<void> exportData() async {
