@@ -46,11 +46,13 @@ class NotificationSettingsNotifier extends StateNotifier<NotificationSettings> {
     final projection = _db.settings.get('projection_alerts') as bool? ?? true;
     final daily = _db.settings.get('daily_reminders') as bool? ?? false;
     final weekly = _db.settings.get('weekly_digest') as bool? ?? true;
+    final onboarding = _db.settings.get('onboarding_complete') as bool? ?? false;
     
     state = NotificationSettings(
       projectionAlerts: projection,
       dailyReminders: daily,
       weeklyDigest: weekly,
+      onboardingComplete: onboarding,
     );
   }
 
@@ -58,6 +60,7 @@ class NotificationSettingsNotifier extends StateNotifier<NotificationSettings> {
     bool? projectionAlerts,
     bool? dailyReminders,
     bool? weeklyDigest,
+    bool? onboardingComplete,
   }) async {
     if (projectionAlerts != null) {
       await _db.settings.put('projection_alerts', projectionAlerts);
@@ -68,11 +71,19 @@ class NotificationSettingsNotifier extends StateNotifier<NotificationSettings> {
     if (weeklyDigest != null) {
       await _db.settings.put('weekly_digest', weeklyDigest);
     }
+    if (onboardingComplete != null) {
+      await _db.settings.put('onboarding_complete', onboardingComplete);
+    }
     
     state = state.copyWith(
       projectionAlerts: projectionAlerts,
       dailyReminders: dailyReminders,
       weeklyDigest: weeklyDigest,
+      onboardingComplete: onboardingComplete,
     );
+  }
+
+  Future<void> setOnboardingComplete() async {
+    await updateSettings(onboardingComplete: true);
   }
 }
