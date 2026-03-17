@@ -86,6 +86,40 @@ class Transaction extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'amount': amount,
+      'categoryId': categoryId,
+      'description': description,
+      'date': date.toIso8601String(),
+      'isIncome': isIncome,
+      'tags': tags,
+      'merchantName': merchantName,
+      'isRecurring': isRecurring,
+      'recurringId': recurringId,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+    };
+  }
+
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      id: json['id'],
+      amount: json['amount'],
+      categoryId: json['categoryId'],
+      description: json['description'],
+      date: DateTime.parse(json['date']),
+      isIncome: json['isIncome'],
+      tags: List<String>.from(json['tags'] ?? []),
+      merchantName: json['merchantName'],
+      isRecurring: json['isRecurring'],
+      recurringId: json['recurringId'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

@@ -31,9 +31,10 @@ dependencies:
   uuid: ^4.4.0
   equatable: ^2.0.5
   flutter_local_notifications: ^17.1.2
-
-  # Sharing/Export
-  share_plus: ^9.0.0
+  encrypt: ^5.0.3
+  archive: ^3.6.1
+  share_plus: ^10.0.0
+  file_picker: ^8.0.0
 
 dev_dependencies:
   flutter_test:

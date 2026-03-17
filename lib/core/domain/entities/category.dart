@@ -78,6 +78,34 @@ class Category extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'iconName': iconName,
+      'color': color,
+      'type': type.name,
+      'budgetLimit': budgetLimit,
+      'isSystem': isSystem,
+      'sortOrder': sortOrder,
+      'parentId': parentId,
+    };
+  }
+
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'],
+      name: json['name'],
+      iconName: json['iconName'],
+      color: json['color'],
+      type: CategoryType.values.byName(json['type']),
+      budgetLimit: json['budgetLimit'],
+      isSystem: json['isSystem'],
+      sortOrder: json['sortOrder'],
+      parentId: json['parentId'],
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

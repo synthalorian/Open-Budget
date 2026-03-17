@@ -63,6 +63,7 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 32),
             _buildSectionHeader('DATA MANAGEMENT'),
             const SizedBox(height: 16),
+            _buildSettingsItem(context, 'CLOUD_UPLINK', 'ENCRYPTED_SYNC', Icons.cloud_sync_rounded, AppColors.accent, '/cloud-sync'),
             _buildSettingsItem(context, 'EXPORT ARCHIVE', 'JSON / CSV', Icons.download_rounded, AppColors.accent, '/export'),
             _buildSettingsItem(context, 'CLEAR MAIN FRAME', 'DESTRUCTIVE', Icons.delete_forever_rounded, AppColors.expense, null),
             const SizedBox(height: 32),

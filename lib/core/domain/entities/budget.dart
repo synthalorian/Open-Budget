@@ -108,6 +108,40 @@ class Budget extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'amount': amount,
+      'period': period.name,
+      'type': type.name,
+      'categoryId': categoryId,
+      'carryOverUnused': carryOverUnused,
+      'startDate': startDate.toIso8601String(),
+      'customPeriodDays': customPeriodDays,
+      'categoryIds': categoryIds,
+      'isActive': isActive,
+      'createdAt': createdAt.toIso8601String(),
+    };
+  }
+
+  factory Budget.fromJson(Map<String, dynamic> json) {
+    return Budget(
+      id: json['id'],
+      name: json['name'],
+      amount: json['amount'],
+      period: BudgetPeriod.values.byName(json['period']),
+      type: BudgetType.values.byName(json['type']),
+      categoryId: json['categoryId'],
+      carryOverUnused: json['carryOverUnused'],
+      startDate: DateTime.parse(json['startDate']),
+      customPeriodDays: json['customPeriodDays'],
+      categoryIds: List<String>.from(json['categoryIds'] ?? []),
+      isActive: json['isActive'],
+      createdAt: DateTime.parse(json['createdAt']),
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

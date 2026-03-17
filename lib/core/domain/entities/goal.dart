@@ -96,6 +96,38 @@ class Goal extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'targetAmount': targetAmount,
+      'currentAmount': currentAmount,
+      'targetDate': targetDate?.toIso8601String(),
+      'iconName': iconName,
+      'color': color,
+      'isCompleted': isCompleted,
+      'createdAt': createdAt.toIso8601String(),
+      'completedAt': completedAt?.toIso8601String(),
+      'notes': notes,
+    };
+  }
+
+  factory Goal.fromJson(Map<String, dynamic> json) {
+    return Goal(
+      id: json['id'],
+      name: json['name'],
+      targetAmount: json['targetAmount'],
+      currentAmount: json['currentAmount'],
+      targetDate: json['targetDate'] != null ? DateTime.parse(json['targetDate']) : null,
+      iconName: json['iconName'],
+      color: json['color'],
+      isCompleted: json['isCompleted'],
+      createdAt: DateTime.parse(json['createdAt']),
+      completedAt: json['completedAt'] != null ? DateTime.parse(json['completedAt']) : null,
+      notes: json['notes'],
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

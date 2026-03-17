@@ -11,6 +11,7 @@ import '../features/education/presentation/pages/education_detail_page.dart';
 import '../features/categories/presentation/pages/categories_page.dart';
 import '../features/settings/presentation/pages/settings_page.dart';
 import '../features/settings/presentation/pages/onboarding_page.dart';
+import '../features/settings/presentation/pages/cloud_sync_page.dart';
 import '../features/settings/data/export_service.dart';
 import '../features/settings/data/notification_settings_provider.dart';
 
@@ -92,6 +93,13 @@ class AppRouter {
               name: 'categories',
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: CategoriesPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/cloud-sync',
+              name: 'cloudSync',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: CloudSyncPage(),
               ),
             ),
           ],
