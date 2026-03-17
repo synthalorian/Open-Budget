@@ -8,6 +8,7 @@ import '../features/goals/presentation/pages/goals_page.dart';
 import '../features/insights/presentation/pages/insights_page.dart';
 import '../features/education/presentation/pages/education_page.dart';
 import '../features/education/presentation/pages/education_detail_page.dart';
+import '../features/categories/presentation/pages/categories_page.dart';
 import '../features/settings/presentation/pages/settings_page.dart';
 import '../features/settings/presentation/pages/onboarding_page.dart';
 import '../features/settings/data/export_service.dart';
@@ -84,6 +85,13 @@ class AppRouter {
               name: 'settings',
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: SettingsPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/categories',
+              name: 'categories',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: CategoriesPage(),
               ),
             ),
           ],

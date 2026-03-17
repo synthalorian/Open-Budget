@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/widgets/neon_ui_kit.dart';
 import '../../data/notification_settings_provider.dart';
@@ -24,8 +25,13 @@ class SettingsPage extends ConsumerWidget {
           children: [
             _buildSectionHeader('IDENTITY'),
             const SizedBox(height: 16),
-            _buildSettingsItem('USER PROFILE', 'SYNTH_X_84', Icons.person_rounded, AppColors.primary),
-            _buildSettingsItem('CURRENCY PROTOCOL', 'USD (\$)', Icons.monetization_on_rounded, AppColors.primary),
+            _buildSettingsItem(context, 'USER PROFILE', 'SYNTH_X_84', Icons.person_rounded, AppColors.primary, null),
+            _buildSettingsItem(context, 'CURRENCY PROTOCOL', 'USD (\$)', Icons.monetization_on_rounded, AppColors.primary, null),
+            
+            const SizedBox(height: 32),
+            _buildSectionHeader('MODULES'),
+            const SizedBox(height: 16),
+            _buildSettingsItem(context, 'SPENDING CATEGORIES', 'CUSTOMIZE DATA_MODULES', Icons.category_rounded, AppColors.accent, '/categories'),
             
             const SizedBox(height: 32),
             _buildSectionHeader('ALERTS'),
@@ -57,12 +63,12 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 32),
             _buildSectionHeader('DATA MANAGEMENT'),
             const SizedBox(height: 16),
-            _buildSettingsItem('EXPORT ARCHIVE', 'JSON / CSV', Icons.download_rounded, AppColors.accent),
-            _buildSettingsItem('CLEAR MAIN FRAME', 'DESTRUCTIVE', Icons.delete_forever_rounded, AppColors.expense),
+            _buildSettingsItem(context, 'EXPORT ARCHIVE', 'JSON / CSV', Icons.download_rounded, AppColors.accent, '/export'),
+            _buildSettingsItem(context, 'CLEAR MAIN FRAME', 'DESTRUCTIVE', Icons.delete_forever_rounded, AppColors.expense, null),
             const SizedBox(height: 32),
             _buildSectionHeader('SECURITY'),
             const SizedBox(height: 16),
-            _buildSettingsItem('BIOMETRIC LOCK', 'ENCRYPTED', Icons.fingerprint_rounded, AppColors.accent),
+            _buildSettingsItem(context, 'BIOMETRIC LOCK', 'ENCRYPTED', Icons.fingerprint_rounded, AppColors.accent, null),
             const SizedBox(height: 48),
             Center(
               child: Text(
@@ -87,28 +93,32 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildSettingsItem(String title, String value, IconData icon, Color color) {
-    return NeonCard(
-      padding: const EdgeInsets.all(16),
-      opacity: 0.2,
-      hasGlow: false,
-      borderColor: AppColors.surfaceLight,
-      child: Row(
-        children: [
-          Icon(icon, color: color, size: 24),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
-                const SizedBox(height: 4),
-                Text(value, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: color)),
-              ],
+  Widget _buildSettingsItem(BuildContext context, String title, String value, IconData icon, Color color, String? route) {
+    return GestureDetector(
+      onTap: route != null ? () => context.push(route) : null,
+      child: NeonCard(
+        padding: const EdgeInsets.all(16),
+        opacity: 0.2,
+        hasGlow: false,
+        borderColor: AppColors.surfaceLight,
+        child: Row(
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                  const SizedBox(height: 4),
+                  Text(value, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: color)),
+                ],
+              ),
             ),
-          ),
-          const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
-        ],
+            if (route != null)
+              const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
+          ],
+        ),
       ),
     );
   }
