@@ -16,14 +16,27 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
   }
 
   void _loadSettings() {
-    final settings = _db.settings.get('app_settings');
-    if (settings != null && settings is AppSettings) {
-      state = settings;
-    }
+    final collision = _db.settings.get('enableCollisionAlerts') as bool? ?? true;
+    final critical = _db.settings.get('enableSystemCriticalAlerts') as bool? ?? true;
+    final velocity = _db.settings.get('enableVelocityWarnings') as bool? ?? true;
+    final currency = _db.settings.get('currencyCode') as String? ?? 'USD';
+    final biometric = _db.settings.get('biometricEnabled') as bool? ?? false;
+    
+    state = AppSettings(
+      enableCollisionAlerts: collision,
+      enableSystemCriticalAlerts: critical,
+      enableVelocityWarnings: velocity,
+      currencyCode: currency,
+      biometricEnabled: biometric,
+    );
   }
 
   Future<void> updateSettings(AppSettings newSettings) async {
-    await _db.settings.put('app_settings', newSettings);
+    await _db.settings.put('enableCollisionAlerts', newSettings.enableCollisionAlerts);
+    await _db.settings.put('enableSystemCriticalAlerts', newSettings.enableSystemCriticalAlerts);
+    await _db.settings.put('enableVelocityWarnings', newSettings.enableVelocityWarnings);
+    await _db.settings.put('currencyCode', newSettings.currencyCode);
+    await _db.settings.put('biometricEnabled', newSettings.biometricEnabled);
     state = newSettings;
   }
 
@@ -44,6 +57,11 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
 
   Future<void> toggleBiometrics(bool value) async {
     final newSettings = state.copyWith(biometricEnabled: value);
+    await updateSettings(newSettings);
+  }
+
+  Future<void> setCurrency(String currencyCode) async {
+    final newSettings = state.copyWith(currencyCode: currencyCode);
     await updateSettings(newSettings);
   }
 }
