@@ -4,8 +4,47 @@ import '../domain/entities/education.dart';
 class AppConstants {
   // App info
   static const String appName = 'Open Budget';
-  static const String appVersion = '0.1.0';
-  static const String currencySymbol = '\$';
+  static const String appVersion = '0.3.0';
+  static String currencySymbol = '\$';
+  
+  // Supported currencies
+  static const Map<String, String> supportedCurrencies = {
+    'USD': '\$',
+    'EUR': '€',
+    'GBP': '£',
+    'JPY': '¥',
+    'CAD': 'C\$',
+    'AUD': 'A\$',
+    'CHF': 'CHF',
+    'CNY': '¥',
+    'INR': '₹',
+    'MXN': 'MX\$',
+    'BRL': 'R\$',
+    'KRW': '₩',
+    'SGD': 'S\$',
+    'HKD': 'HK\$',
+    'NOK': 'kr',
+    'SEK': 'kr',
+    'DKK': 'kr',
+    'NZD': 'NZ\$',
+    'ZAR': 'R',
+    'RUB': '₽',
+    'TRY': '₺',
+    'PLN': 'zł',
+    'THB': '฿',
+    'IDR': 'Rp',
+    'MYR': 'RM',
+    'PHP': '₱',
+    'CZK': 'Kč',
+    'ILS': '₪',
+    'CLP': 'CLP\$',
+    'PKR': '₨',
+    'EGP': 'E£',
+    'TWD': 'NT\$',
+    'AED': 'د.إ',
+    'SAR': '﷼',
+    'VND': '₫',
+  };
   
   // Database
   static const String dbName = 'open_budget';

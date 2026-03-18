@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/domain/entities/settings.dart';
 import '../../../../shared/widgets/neon_ui_kit.dart';
 import '../../data/notification_settings_provider.dart';
 import '../../data/settings_providers.dart';
@@ -31,7 +33,7 @@ class SettingsPage extends ConsumerWidget {
             _buildSectionHeader('IDENTITY'),
             const SizedBox(height: 16),
             _buildSettingsItem(context, 'USER PROFILE', 'SYNTH_X_84', Icons.person_rounded, AppColors.primary, null),
-            _buildSettingsItem(context, 'CURRENCY_PROTOCOL', 'USD (\$)', Icons.monetization_on_rounded, AppColors.primary, null),
+            _buildCurrencySelector(context, settingsNotifier, appSettings),
             
             const SizedBox(height: 32),
             _buildSectionHeader('MODULES'),
@@ -225,6 +227,97 @@ class SettingsPage extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCurrencySelector(BuildContext context, SettingsNotifier notifier, AppSettings settings) {
+    final currencies = AppConstants.supportedCurrencies;
+    return GestureDetector(
+      onTap: () => _showCurrencySelector(context, notifier, settings, currencies),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        child: NeonCard(
+          padding: const EdgeInsets.all(16),
+          opacity: 0.2,
+          hasGlow: false,
+          borderColor: AppColors.surfaceLight,
+          child: Row(
+            children: [
+              const Icon(Icons.monetization_on_rounded, color: AppColors.primary, size: 24),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('CURRENCY_PROTOCOL', style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                    const SizedBox(height: 4),
+                    Text('${settings.currencyCode} (${settings.currencySymbol})', style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: AppColors.primary)),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showCurrencySelector(BuildContext context, SettingsNotifier notifier, AppSettings settings, Map<String, String> currencies) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('SELECT_CURRENCY_PROTOCOL', style: AppTextStyles.headlineMainframe.copyWith(fontSize: 18)),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: currencies.length,
+                itemBuilder: (context, index) {
+                  final code = currencies.keys.elementAt(index);
+                  final symbol = currencies[code]!;
+                  final isSelected = code == settings.currencyCode;
+                  
+                  return GestureDetector(
+                    onTap: () {
+                      notifier.setCurrency(code);
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: isSelected ? AppColors.primary.withOpacity(0.2) : AppColors.surfaceLight,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSelected ? AppColors.primary : Colors.transparent,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(symbol, style: AppTextStyles.moneyLarge.copyWith(fontSize: 20)),
+                          const SizedBox(width: 16),
+                          Text(code, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                          const Spacer(),
+                          if (isSelected)
+                            const Icon(Icons.check_circle_rounded, color: AppColors.accent),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
