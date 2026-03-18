@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'settings.g.dart';
 
-@HiveType(typeId: 10)
+@HiveType(typeId: 11)
 class AppSettings extends Equatable {
   @HiveField(0)
   final bool enableCollisionAlerts;
@@ -17,11 +17,15 @@ class AppSettings extends Equatable {
   @HiveField(3)
   final String currencySymbol;
 
+  @HiveField(4)
+  final bool biometricEnabled;
+
   const AppSettings({
     this.enableCollisionAlerts = true,
     this.enableSystemCriticalAlerts = true,
     this.enableVelocityWarnings = true,
     this.currencySymbol = '\$',
+    this.biometricEnabled = false,
   });
 
   AppSettings copyWith({
@@ -29,12 +33,14 @@ class AppSettings extends Equatable {
     bool? enableSystemCriticalAlerts,
     bool? enableVelocityWarnings,
     String? currencySymbol,
+    bool? biometricEnabled,
   }) {
     return AppSettings(
       enableCollisionAlerts: enableCollisionAlerts ?? this.enableCollisionAlerts,
       enableSystemCriticalAlerts: enableSystemCriticalAlerts ?? this.enableSystemCriticalAlerts,
       enableVelocityWarnings: enableVelocityWarnings ?? this.enableVelocityWarnings,
       currencySymbol: currencySymbol ?? this.currencySymbol,
+      biometricEnabled: biometricEnabled ?? this.biometricEnabled,
     );
   }
 
@@ -44,5 +50,6 @@ class AppSettings extends Equatable {
         enableSystemCriticalAlerts,
         enableVelocityWarnings,
         currencySymbol,
+        biometricEnabled,
       ];
 }

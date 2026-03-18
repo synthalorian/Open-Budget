@@ -5,26 +5,23 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/widgets/neon_ui_kit.dart';
 import '../../data/notification_settings_provider.dart';
+import '../../data/settings_providers.dart';
+import '../../../../core/services/security_service.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
-
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationSettings = ref.watch(notificationSettingsProvider);
     final notificationNotifier = ref.read(notificationSettingsProvider.notifier);
+    final appSettings = ref.watch(settingsProvider);
+    final settingsNotifier = ref.read(settingsProvider.notifier);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('CORE CONFIG', style: AppTextStyles.headlineMainframe),
+        title: Text('CORE config', style: AppTextStyles.headlineMainframe),
       ),
       body: Container(
         decoration: const BoxDecoration(gradient: AppColors.spaceGradient),
@@ -33,37 +30,19 @@ class SettingsPage extends ConsumerWidget {
           children: [
             _buildSectionHeader('IDENTITY'),
             const SizedBox(height: 16),
-            _buildSettingsItem(
-              title: 'USER PROFILE',
-              value: 'SYNTH_X_84',
-              icon: Icons.person_rounded,
-              color: AppColors.primary,
-              onTap: null,
-            ),
-            _buildSettingsItem(
-              title: 'CURRENCY PROTOCOL',
-              value: 'USD (\$)',
-              icon: Icons.monetization_on_rounded,
-              color: AppColors.primary,
-              onTap: null,
-            ),
+            _buildSettingsItem(context, 'USER PROFILE', 'SYNth_x_84', Icons.person_rounded, AppColors.primary, null),
+            _buildSettingsItem(context, 'Currency Protocol', 'USD (\$)', Icons.monetization_on_rounded, AppColors.primary, null),
             
             const SizedBox(height: 32),
             _buildSectionHeader('MODULES'),
             const SizedBox(height: 16),
-            _buildSettingsItem(
-              title: 'SPENDING CATEGORIES',
-              value: 'CUSTOMIZE DATA_MODULES',
-              icon: Icons.category_rounded,
-              color: AppColors.accent,
-              onTap: () => context.push('/categories'),
-            ),
+            _buildSettingsItem(context, 'Spending categories', 'customize data modules', Icons.category_rounded, AppColors.accent, '/categories'),
             
             const SizedBox(height: 32),
-            _buildSectionHeader('ALERTS'),
+            _buildSectionHeader('alerts'),
             const SizedBox(height: 16),
             _buildToggleItem(
-              'PROJECTION ALERTS',
+              'Projection alerts',
               'AI collision detection',
               Icons.bolt_rounded,
               notificationSettings.projectionAlerts,
@@ -71,7 +50,7 @@ class SettingsPage extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             _buildToggleItem(
-              'DAILY REMINDERS',
+              'Daily reminders',
               'Log transaction logs',
               Icons.notifications_active_rounded,
               notificationSettings.dailyReminders,
@@ -79,77 +58,38 @@ class SettingsPage extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             _buildToggleItem(
-              'WEEKLY DIGEST',
+              'weekly digest',
               'Sunday data summary',
               Icons.summarize_rounded,
-              notificationSettings.weeklyDigest,
+              notificationSettings.weeklyDigest
               (val) => notificationNotifier.updateSettings(weeklyDigest: val),
             ),
-
+            
             const SizedBox(height: 32),
-            _buildSectionHeader('DATA MANAGEMENT'),
+            _buildSectionHeader('data management'),
             const SizedBox(height: 16),
-            _buildSettingsItem(
-              title: 'CLOUD_UPLINK',
-              value: 'ENCRYPTED_SYNC',
-              icon: Icons.cloud_sync_rounded,
-              color: AppColors.accent,
-              onTap: () => context.push('/cloud-sync'),
-            ),
-            _buildSettingsItem(
-              title: 'EXPORT ARCHIVE',
-              value: 'JSON / CSV',
-              icon: Icons.download_rounded,
-              color: AppColors.accent,
-              onTap: () => context.push('/export'),
-            ),
-            _buildSettingsItem(
-              title: 'CLEAR MAIN FRAME',
-              value: 'DESTRUCTIVE',
-              icon: Icons.delete_forever_rounded,
-              color: AppColors.expense,
-              onTap: null,
-            ),
-
+            _buildSettingsItem(context, 'Cloud Uplink', 'Encrypted sync', Icons.cloud_sync_rounded, AppColors.accent, '/cloud-sync'),
+            _buildSettingsItem(context, 'Export archive', 'JSON /CSV', Icons.download_rounded, AppColors.accent, '/export'),
+            _buildSettingsItem(context, 'Clear main frame', ' destructive', Icons.delete_forever_rounded, AppColors.expense, null),
+            
             const SizedBox(height: 32),
-            _buildSectionHeader('SECURITY'),
+            _buildSectionHeader('security'),
             const SizedBox(height: 16),
-            _buildSettingsItem(
-              title: 'BIOMETRIC LOCK',
-              value: 'ENCRYPTED',
-              icon: Icons.fingerprint_rounded,
-              color: AppColors.accent,
-              onTap: null,
-            ),
-
+            _buildBiometricToggle(context, settingsNotifier, appSettings.biometricEnabled),
             const SizedBox(height: 32),
-            _buildSectionHeader('DEVELOPMENT'),
+            _buildSectionHeader('Open source'),
             const SizedBox(height: 16),
-            _buildSettingsItem(
-              title: 'OPEN SOURCE',
-              value: 'GITHUB_REPL_LINK',
-              icon: Icons.code_rounded,
-              color: AppColors.accent,
-              onTap: () => _launchUrl('https://github.com/synthalorian/open-budget'),
-            ),
-            _buildSettingsItem(
-              title: 'SUPPORT_UNIT',
-              value: 'BUY_ME_A_COFFEE',
-              icon: Icons.coffee_rounded,
-              color: AppColors.income,
-              onTap: () => _launchUrl('https://www.buymeacoffee.com/synthalorian'),
-            ),
-
-            const SizedBox(height: 48),
-            Center(
-              child: Text(
-                'OPEN_BUDGET v0.1.0\nBY SYNTHCLAW 🎹🦞',
-                textAlign: TextAlign.center,
-                style: AppTextStyles.labelNeon.copyWith(fontSize: 10, color: AppColors.textMuted),
-              ),
-            ),
+            _buildSettingsItem(context, 'GitHub repository', 'github.com/synthalorian/open-budget', Icons.code_rounded, AppColors.primary, null, url: 'https://github.com/synthalorian/open-budget'),
+            _buildSettingsItem(context, 'Support development', 'Buy me a coffee', Icons.coffee_rounded, AppColors.warning, null, url: 'https://www.buymeacoffee.com/synthalorian'),
+            _buildSectionHeader('Community'),
+            Text('GITHUB Repository', style: AppTextStyles.labelNeon),
+            const SizedBox(height: 4),
+            Text('Support Development', style: AppTextStyles.labelNeon.copyWith(color: AppColors.warning),
           ],
         ),
+        SizedBox(height: 32),
+        Text('Licensed under MPL-2.0', style: AppTextStyles.labelNeon.copyWith(fontSize: 10, color: AppColors.accent),
+      ),
       ),
     );
   }
@@ -164,72 +104,63 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildSettingsItem({
-    required String title,
-    required String value,
-    required IconData icon,
-    required Color color,
-    required VoidCallback? onTap,
-  }) {
+  Widget _buildSettingsItem(BuildContext context, String title, String value, IconData icon, Color color, String? route, {String? url}) {
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        child: NeonCard(
-          padding: const EdgeInsets.all(16),
-          opacity: 0.2,
-          hasGlow: false,
-          borderColor: AppColors.surfaceLight,
-          child: Row(
-            children: [
-              Icon(icon, color: color, size: 24),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
-                    const SizedBox(height: 4),
-                    Text(value, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: color)),
-                  ],
-                ),
+      onTap: () async {
+        if (url != null) {
+          final uri = Uri.parse(url);
+          if (await canLaunchUrl(uri, mode: LaunchMode.externalApplication)) {
+            }
+          }
+        } else if (route != null) {
+          context.push(route);
+        }
+      },
+      child: NeonCard(
+        padding: const EdgeInsets.all(16),
+        opacity: 0.2,
+        hasGlow: false,
+        borderColor: AppColors.surfaceLight,
+        child: Row(
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                  const SizedBox(height: 4),
+                  Text(value, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: color)),
+                ],
               ),
-              if (onTap != null)
-                const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
             ],
-          ),
+          if (route != null || url != null)
+              const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildToggleItem(String title, String subtitle, IconData icon, bool value, Function(bool) onChanged) {
+  Widget _buildToggleItem(String title, String subtitle, IconData icon, bool value, Function(bool onChanged) {
     return NeonCard(
       padding: const EdgeInsets.all(16),
       opacity: 0.2,
       hasGlow: value,
-      glowColor: AppColors.accent,
-      borderColor: value ? AppColors.accent.withOpacity(0.5) : AppColors.surfaceLight,
+      glowColor: value ? AppColors.accent : AppColors.surfaceLight,
+      borderColor: value ? AppColors.accent : AppColors.surfaceLight,
       child: Row(
         children: [
-          Icon(icon, color: value ? AppColors.accent : AppColors.textMuted, size: 24),
+          Icon(icon, color: value ? AppColors.accent : AppColors.textMuted, size: 20),
           const SizedBox(width: 16),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
-                Text(subtitle, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: AppColors.textMuted)),
-              ],
+            child: Switch(
+              value: value,
+              onChanged: (val) => onChanged(val),
+              activeColor: AppColors.accent,
+              inactiveTrackColor: AppColors.textMuted,
             ),
-          ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeColor: AppColors.accent,
-            activeTrackColor: AppColors.accent.withOpacity(0.3),
-            inactiveThumbColor: AppColors.textMuted,
-            inactiveTrackColor: AppColors.surfaceLight,
           ),
         ],
       ),
