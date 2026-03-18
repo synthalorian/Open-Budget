@@ -21,7 +21,7 @@ class SettingsPage extends ConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('CORE config', style: AppTextStyles.headlineMainframe),
+        title: Text('CORE CONFIG', style: AppTextStyles.headlineMainframe),
       ),
       body: Container(
         decoration: const BoxDecoration(gradient: AppColors.spaceGradient),
@@ -30,19 +30,20 @@ class SettingsPage extends ConsumerWidget {
           children: [
             _buildSectionHeader('IDENTITY'),
             const SizedBox(height: 16),
-            _buildSettingsItem(context, 'USER PROFILE', 'SYNth_x_84', Icons.person_rounded, AppColors.primary, null),
-            _buildSettingsItem(context, 'Currency Protocol', 'USD (\$)', Icons.monetization_on_rounded, AppColors.primary, null),
+            _buildSettingsItem(context, 'USER PROFILE', 'SYNTH_X_84', Icons.person_rounded, AppColors.primary, null),
+            _buildSettingsItem(context, 'CURRENCY_PROTOCOL', 'USD (\$)', Icons.monetization_on_rounded, AppColors.primary, null),
             
             const SizedBox(height: 32),
             _buildSectionHeader('MODULES'),
             const SizedBox(height: 16),
-            _buildSettingsItem(context, 'Spending categories', 'customize data modules', Icons.category_rounded, AppColors.accent, '/categories'),
+            _buildSettingsItem(context, 'SPENDING_CATEGORIES', 'CUSTOMIZE_DATA_MODULES', Icons.category_rounded, AppColors.accent, '/categories'),
+            _buildSettingsItem(context, 'CHRONOS_MODULE', 'RECURRING_TRANSACTIONS', Icons.history_toggle_off_rounded, AppColors.accent, '/recurring'),
             
             const SizedBox(height: 32),
-            _buildSectionHeader('alerts'),
+            _buildSectionHeader('ALERTS'),
             const SizedBox(height: 16),
             _buildToggleItem(
-              'Projection alerts',
+              'PROJECTION_ALERTS',
               'AI collision detection',
               Icons.bolt_rounded,
               notificationSettings.projectionAlerts,
@@ -50,46 +51,49 @@ class SettingsPage extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             _buildToggleItem(
-              'Daily reminders',
-              'Log transaction logs',
+              'DAILY_REMINDERS',
+              'Log transaction prompts',
               Icons.notifications_active_rounded,
               notificationSettings.dailyReminders,
               (val) => notificationNotifier.updateSettings(dailyReminders: val),
             ),
             const SizedBox(height: 12),
             _buildToggleItem(
-              'weekly digest',
+              'WEEKLY_DIGEST',
               'Sunday data summary',
               Icons.summarize_rounded,
-              notificationSettings.weeklyDigest
+              notificationSettings.weeklyDigest,
               (val) => notificationNotifier.updateSettings(weeklyDigest: val),
             ),
-            
+
             const SizedBox(height: 32),
-            _buildSectionHeader('data management'),
+            _buildSectionHeader('DATA_MANAGEMENT'),
             const SizedBox(height: 16),
-            _buildSettingsItem(context, 'Cloud Uplink', 'Encrypted sync', Icons.cloud_sync_rounded, AppColors.accent, '/cloud-sync'),
-            _buildSettingsItem(context, 'Export archive', 'JSON /CSV', Icons.download_rounded, AppColors.accent, '/export'),
-            _buildSettingsItem(context, 'Clear main frame', ' destructive', Icons.delete_forever_rounded, AppColors.expense, null),
+            _buildSettingsItem(context, 'CLOUD_UPLINK', 'ENCRYPTED_SYNC', Icons.cloud_sync_rounded, AppColors.accent, '/cloud-sync'),
+            _buildSettingsItem(context, 'EXPORT_ARCHIVE', 'JSON / CSV', Icons.download_rounded, AppColors.accent, '/export'),
+            _buildSettingsItem(context, 'CLEAR_MAIN_FRAME', 'DESTRUCTIVE', Icons.delete_forever_rounded, AppColors.expense, null),
             
             const SizedBox(height: 32),
-            _buildSectionHeader('security'),
+            _buildSectionHeader('SECURITY'),
             const SizedBox(height: 16),
             _buildBiometricToggle(context, settingsNotifier, appSettings.biometricEnabled),
+            
             const SizedBox(height: 32),
-            _buildSectionHeader('Open source'),
+            _buildSectionHeader('OPEN_SOURCE'),
             const SizedBox(height: 16),
-            _buildSettingsItem(context, 'GitHub repository', 'github.com/synthalorian/open-budget', Icons.code_rounded, AppColors.primary, null, url: 'https://github.com/synthalorian/open-budget'),
-            _buildSettingsItem(context, 'Support development', 'Buy me a coffee', Icons.coffee_rounded, AppColors.warning, null, url: 'https://www.buymeacoffee.com/synthalorian'),
-            _buildSectionHeader('Community'),
-            Text('GITHUB Repository', style: AppTextStyles.labelNeon),
-            const SizedBox(height: 4),
-            Text('Support Development', style: AppTextStyles.labelNeon.copyWith(color: AppColors.warning),
+            _buildSettingsItem(context, 'GITHUB_REPOSITORY', 'github.com/synthalorian/open-budget', Icons.code_rounded, AppColors.primary, null, url: 'https://github.com/synthalorian/open-budget'),
+            _buildSettingsItem(context, 'SUPPORT_DEVELOPMENT', 'BUY_ME_A_COFFEE', Icons.coffee_rounded, AppColors.warning, null, url: 'https://www.buymeacoffee.com/synthalorian'),
+            
+            const SizedBox(height: 48),
+            Center(
+              child: Text(
+                'OPEN_BUDGET v0.1.2\nBY SYNTHCLAW 🎹🦞',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.labelNeon.copyWith(fontSize: 10, color: AppColors.textMuted),
+              ),
+            ),
           ],
         ),
-        SizedBox(height: 32),
-        Text('Licensed under MPL-2.0', style: AppTextStyles.labelNeon.copyWith(fontSize: 10, color: AppColors.accent),
-      ),
       ),
     );
   }
@@ -109,61 +113,118 @@ class SettingsPage extends ConsumerWidget {
       onTap: () async {
         if (url != null) {
           final uri = Uri.parse(url);
-          if (await canLaunchUrl(uri, mode: LaunchMode.externalApplication)) {
-            }
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
           }
         } else if (route != null) {
           context.push(route);
         }
       },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        child: NeonCard(
+          padding: const EdgeInsets.all(16),
+          opacity: 0.2,
+          hasGlow: false,
+          borderColor: AppColors.surfaceLight,
+          child: Row(
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                    const SizedBox(height: 4),
+                    Text(value, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: color)),
+                  ],
+                ),
+              ),
+              if (route != null || url != null)
+                const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildToggleItem(String title, String subtitle, IconData icon, bool value, Function(bool) onChanged) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
       child: NeonCard(
         padding: const EdgeInsets.all(16),
         opacity: 0.2,
-        hasGlow: false,
-        borderColor: AppColors.surfaceLight,
+        hasGlow: value,
+        glowColor: AppColors.accent,
+        borderColor: value ? AppColors.accent.withOpacity(0.5) : AppColors.surfaceLight,
         child: Row(
           children: [
-            Icon(icon, color: color, size: 24),
+            Icon(icon, color: value ? AppColors.accent : AppColors.textMuted, size: 24),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
-                  const SizedBox(height: 4),
-                  Text(value, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: color)),
+                  Text(subtitle, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: AppColors.textMuted)),
                 ],
               ),
-            ],
-          if (route != null || url != null)
-              const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
+            ),
+            Switch(
+              value: value,
+              onChanged: onChanged,
+              activeColor: AppColors.accent,
+              activeTrackColor: AppColors.accent.withOpacity(0.3),
+              inactiveThumbColor: AppColors.textMuted,
+              inactiveTrackColor: AppColors.surfaceLight,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildToggleItem(String title, String subtitle, IconData icon, bool value, Function(bool onChanged) {
-    return NeonCard(
-      padding: const EdgeInsets.all(16),
-      opacity: 0.2,
-      hasGlow: value,
-      glowColor: value ? AppColors.accent : AppColors.surfaceLight,
-      borderColor: value ? AppColors.accent : AppColors.surfaceLight,
-      child: Row(
-        children: [
-          Icon(icon, color: value ? AppColors.accent : AppColors.textMuted, size: 20),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Switch(
-              value: value,
-              onChanged: (val) => onChanged(val),
-              activeColor: AppColors.accent,
-              inactiveTrackColor: AppColors.textMuted,
-            ),
+  Widget _buildBiometricToggle(BuildContext context, SettingsNotifier notifier, bool isEnabled) {
+    return FutureBuilder<bool>(
+      future: SecurityService().isBiometricAvailable(),
+      builder: (context, snapshot) {
+        final isAvailable = snapshot.data ?? false;
+        
+        return NeonCard(
+          padding: const EdgeInsets.all(16),
+          opacity: 0.2,
+          hasGlow: isEnabled,
+          glowColor: AppColors.accent,
+          borderColor: isEnabled ? AppColors.accent : AppColors.surfaceLight,
+          child: Row(
+            children: [
+              Icon(Icons.fingerprint_rounded, color: isEnabled ? AppColors.accent : AppColors.textMuted, size: 24),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('BIOMETRIC_FIREWALL', style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                    const SizedBox(height: 4),
+                    Text(
+                      isAvailable ? (isEnabled ? 'ACTIVE_ENCRYPTION' : 'TAP_TO_ENABLE') : 'NO_HARDWARE_DETECTED',
+                      style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: isEnabled ? AppColors.accent : AppColors.textMuted),
+                    ),
+                  ],
+                ),
+              ),
+              Switch(
+                value: isEnabled,
+                onChanged: isAvailable ? (val) => notifier.toggleBiometrics(val) : null,
+                activeColor: AppColors.accent,
+                inactiveTrackColor: AppColors.textMuted,
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

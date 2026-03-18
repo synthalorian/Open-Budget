@@ -5,6 +5,7 @@ import '../domain/entities/budget.dart';
 import '../domain/entities/goal.dart';
 import '../domain/entities/education.dart';
 import '../domain/entities/settings.dart';
+import '../domain/entities/recurring.dart';
 import '../constants/app_constants.dart';
 
 class DatabaseService {
@@ -17,6 +18,7 @@ class DatabaseService {
   late Box<Budget> _budgetBox;
   late Box<Goal> _goalBox;
   late Box<UserProgress> _progressBox;
+  late Box<RecurringTransaction> _recurringBox;
   late Box<dynamic> _settingsBox;
 
   Box<Transaction> get transactions => _transactionBox;
@@ -24,6 +26,7 @@ class DatabaseService {
   Box<Budget> get budgets => _budgetBox;
   Box<Goal> get goals => _goalBox;
   Box<UserProgress> get progress => _progressBox;
+  Box<RecurringTransaction> get recurring => _recurringBox;
   Box<dynamic> get settings => _settingsBox;
 
   Future<void> initialize() async {
@@ -42,6 +45,7 @@ class DatabaseService {
     Hive.registerAdapter(DifficultyLevelAdapter());
     Hive.registerAdapter(UserProgressAdapter());
     Hive.registerAdapter(AppSettingsAdapter());
+    Hive.registerAdapter(RecurringTransactionAdapter());
 
     // Open boxes
     _transactionBox = await Hive.openBox<Transaction>('transactions');
@@ -49,6 +53,7 @@ class DatabaseService {
     _budgetBox = await Hive.openBox<Budget>('budgets');
     _goalBox = await Hive.openBox<Goal>('goals');
     _progressBox = await Hive.openBox<UserProgress>('progress');
+    _recurringBox = await Hive.openBox<RecurringTransaction>('recurring');
     _settingsBox = await Hive.openBox<dynamic>('settings');
 
     // Initialize default categories if empty
@@ -80,6 +85,7 @@ class DatabaseService {
     await _categoryBox.clear();
     await _goalBox.clear();
     await _progressBox.clear();
+    await _recurringBox.clear();
     // Keep settings for user preferences
   }
 
