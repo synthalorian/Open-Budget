@@ -8,7 +8,7 @@ part of 'settings.dart';
 
 class AppSettingsAdapter extends TypeAdapter<AppSettings> {
   @override
-  final int typeId = 10;
+  final int typeId = 11;
 
   @override
   AppSettings read(BinaryReader reader) {
@@ -21,13 +21,14 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
       enableSystemCriticalAlerts: fields[1] as bool,
       enableVelocityWarnings: fields[2] as bool,
       currencySymbol: fields[3] as String,
+      biometricEnabled: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppSettings obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.enableCollisionAlerts)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
       ..writeByte(2)
       ..write(obj.enableVelocityWarnings)
       ..writeByte(3)
-      ..write(obj.currencySymbol);
+      ..write(obj.currencySymbol)
+      ..writeByte(4)
+      ..write(obj.biometricEnabled);
   }
 
   @override

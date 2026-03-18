@@ -41,4 +41,9 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     final newSettings = state.copyWith(enableVelocityWarnings: value);
     await updateSettings(newSettings);
   }
+
+  Future<void> toggleBiometrics(bool value) async {
+    final newSettings = state.copyWith(biometricEnabled: value);
+    await updateSettings(newSettings);
+  }
 }
