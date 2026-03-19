@@ -46,7 +46,7 @@ class _SecurityLockScreenState extends ConsumerState<SecurityLockScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const NeonPulseOrb(
+              NeonPulseOrb(
                 percentUsed: 0.5,
                 baseColor: AppColors.primary,
               ),

@@ -8,7 +8,7 @@ import '../../../../shared/widgets/neon_ui_kit.dart';
 import '../../../../shared/providers/database_provider.dart';
 import '../../../../core/domain/entities/recurring.dart';
 import '../../../../core/domain/entities/category.dart';
-import '../data/recurring_providers.dart';
+import '../../data/recurring_providers.dart';
 
 class RecurringPage extends ConsumerWidget {
   const RecurringPage({super.key});
@@ -23,7 +23,7 @@ class RecurringPage extends ConsumerWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left_rounded, color: AppColors.accent),
+          icon: Icon(Icons.chevron_left_rounded, color: AppColors.accent),
           onPressed: () => context.pop(),
         ),
         title: Text('CHRONOS_MODULE', style: AppTextStyles.headlineMainframe),
@@ -64,7 +64,7 @@ class RecurringPage extends ConsumerWidget {
   }
 
   Widget _buildEmptyState() {
-    return const NeonCard(
+    return NeonCard(
       child: Center(
         child: Text('NO RECURRING TRANSACTIONS DETECTED', style: AppTextStyles.labelNeon),
       ),
@@ -108,11 +108,13 @@ class RecurringPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(currency.format(r.amount), style: AppTextStyles.headlineTitle.copyWith(fontSize: 16, color: color)),
-                Switch(
-                  value: r.isActive, 
-                  onChanged: (val) => ref.read(recurringNotifierProvider.notifier).toggleActive(r.id, val),
-                  activeColor: AppColors.accent,
-                  scaleSize: 0.7,
+                Transform.scale(
+                  scale: 0.7,
+                  child: Switch(
+                    value: r.isActive, 
+                    onChanged: (val) => ref.read(recurringNotifierProvider.notifier).toggleActive(r.id, val),
+                    activeColor: AppColors.accent,
+                  ),
                 ),
               ],
             ),
