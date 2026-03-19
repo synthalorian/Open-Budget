@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/theme/neon_themes.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/domain/entities/settings.dart';
 import '../../../../shared/widgets/neon_ui_kit.dart';
@@ -12,6 +13,13 @@ import '../../../../core/services/security_service.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,9 +44,14 @@ class SettingsPage extends ConsumerWidget {
             _buildCurrencySelector(context, settingsNotifier, appSettings),
             
             const SizedBox(height: 32),
+            _buildSectionHeader('AESTHETICS'),
+            const SizedBox(height: 16),
+            _buildThemeSelector(context, settingsNotifier, appSettings),
+
+            const SizedBox(height: 32),
             _buildSectionHeader('MODULES'),
             const SizedBox(height: 16),
-            _buildSettingsItem(context, 'SPENDING_CATEGORIES', 'CUSTOMIZE_DATA_MODULES', Icons.category_rounded, AppColors.accent, '/categories'),
+            _buildSettingsItem(context, 'SPENDING_CATEGORIES', 'CUSTOMIZE DATA_MODULES', Icons.category_rounded, AppColors.accent, '/categories'),
             _buildSettingsItem(context, 'CHRONOS_MODULE', 'RECURRING_TRANSACTIONS', Icons.history_toggle_off_rounded, AppColors.accent, '/recurring'),
             
             const SizedBox(height: 32),
@@ -89,7 +102,7 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 48),
             Center(
               child: Text(
-                'OPEN_BUDGET v0.1.2\nBY SYNTH AND SYNTHCLAW 🎹🦞',
+                'OPEN_BUDGET v0.4.0\nBY SYNTH AND SYNTHCLAW 🎹🦞',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.labelNeon.copyWith(fontSize: 10, color: AppColors.textMuted),
               ),
@@ -110,9 +123,9 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildSettingsItem(BuildContext context, String title, String value, IconData icon, Color color, String? route, {String? url}) {
+  Widget _buildSettingsItem(BuildContext context, String title, String value, IconData icon, Color color, String? route, {String? url, VoidCallback? onTap}) {
     return GestureDetector(
-      onTap: () async {
+      onTap: onTap ?? () async {
         if (url != null) {
           final uri = Uri.parse(url);
           if (await canLaunchUrl(uri)) {
@@ -144,7 +157,7 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
               if (route != null || url != null)
-                const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
+                Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
             ],
           ),
         ),
@@ -194,36 +207,41 @@ class SettingsPage extends ConsumerWidget {
       builder: (context, snapshot) {
         final isAvailable = snapshot.data ?? false;
         
-        return NeonCard(
-          padding: const EdgeInsets.all(16),
-          opacity: 0.2,
-          hasGlow: isEnabled,
-          glowColor: AppColors.accent,
-          borderColor: isEnabled ? AppColors.accent : AppColors.surfaceLight,
-          child: Row(
-            children: [
-              Icon(Icons.fingerprint_rounded, color: isEnabled ? AppColors.accent : AppColors.textMuted, size: 24),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('BIOMETRIC_FIREWALL', style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
-                    const SizedBox(height: 4),
-                    Text(
-                      isAvailable ? (isEnabled ? 'ACTIVE_ENCRYPTION' : 'TAP_TO_ENABLE') : 'NO_HARDWARE_DETECTED',
-                      style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: isEnabled ? AppColors.accent : AppColors.textMuted),
-                    ),
-                  ],
+        return Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          child: NeonCard(
+            padding: const EdgeInsets.all(16),
+            opacity: 0.2,
+            hasGlow: isEnabled,
+            glowColor: AppColors.accent,
+            borderColor: isEnabled ? AppColors.accent : AppColors.surfaceLight,
+            child: Row(
+              children: [
+                Icon(Icons.fingerprint_rounded, color: isEnabled ? AppColors.accent : AppColors.textMuted, size: 24),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('BIOMETRIC_FIREWALL', style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                      const SizedBox(height: 4),
+                      Text(
+                        isAvailable ? (isEnabled ? 'ACTIVE_ENCRYPTION' : 'TAP_TO_ENABLE') : 'NO_HARDWARE_DETECTED',
+                        style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: isEnabled ? AppColors.accent : AppColors.textMuted),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Switch(
-                value: isEnabled,
-                onChanged: isAvailable ? (val) => notifier.toggleBiometrics(val) : null,
-                activeColor: AppColors.accent,
-                inactiveTrackColor: AppColors.textMuted,
-              ),
-            ],
+                Switch(
+                  value: isEnabled,
+                  onChanged: isAvailable ? (val) => notifier.toggleBiometrics(val) : null,
+                  activeColor: AppColors.accent,
+                  activeTrackColor: AppColors.accent.withOpacity(0.3),
+                  inactiveThumbColor: AppColors.textMuted,
+                  inactiveTrackColor: AppColors.surfaceLight,
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -232,34 +250,27 @@ class SettingsPage extends ConsumerWidget {
 
   Widget _buildCurrencySelector(BuildContext context, SettingsNotifier notifier, AppSettings settings) {
     final currencies = AppConstants.supportedCurrencies;
-    return GestureDetector(
+    return _buildSettingsItem(
+      context, 
+      'CURRENCY_PROTOCOL', 
+      '${settings.currencyCode} (${settings.currencySymbol})', 
+      Icons.monetization_on_rounded, 
+      AppColors.primary, 
+      null,
       onTap: () => _showCurrencySelector(context, notifier, settings, currencies),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        child: NeonCard(
-          padding: const EdgeInsets.all(16),
-          opacity: 0.2,
-          hasGlow: false,
-          borderColor: AppColors.surfaceLight,
-          child: Row(
-            children: [
-              const Icon(Icons.monetization_on_rounded, color: AppColors.primary, size: 24),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('CURRENCY_PROTOCOL', style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
-                    const SizedBox(height: 4),
-                    Text('${settings.currencyCode} (${settings.currencySymbol})', style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: AppColors.primary)),
-                  ],
-                ),
-              ),
-              const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textMuted, size: 16),
-            ],
-          ),
-        ),
-      ),
+    );
+  }
+
+  Widget _buildThemeSelector(BuildContext context, SettingsNotifier notifier, AppSettings settings) {
+    final currentTheme = NeonThemes.byName(settings.themeName);
+    return _buildSettingsItem(
+      context, 
+      'VISUAL_INTERFACE', 
+      currentTheme.displayName, 
+      Icons.palette_rounded, 
+      AppColors.primary, 
+      null,
+      onTap: () => _showThemeSelector(context, notifier, settings),
     );
   }
 
@@ -307,7 +318,78 @@ class SettingsPage extends ConsumerWidget {
                           Text(code, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
                           const Spacer(),
                           if (isSelected)
-                            const Icon(Icons.check_circle_rounded, color: AppColors.accent),
+                            Icon(Icons.check_circle_rounded, color: AppColors.accent),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showThemeSelector(BuildContext context, SettingsNotifier notifier, AppSettings settings) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('SELECT_INTERFACE_SKIN', style: AppTextStyles.headlineMainframe.copyWith(fontSize: 18)),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: NeonThemes.all.length,
+                itemBuilder: (context, index) {
+                  final theme = NeonThemes.all[index];
+                  final isSelected = theme.name == settings.themeName;
+                  
+                  return GestureDetector(
+                    onTap: () {
+                      notifier.setTheme(theme.name);
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: isSelected ? theme.primary.withOpacity(0.2) : AppColors.surfaceLight,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSelected ? theme.primary : Colors.transparent,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 24,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              color: theme.primary,
+                              shape: BoxShape.circle,
+                              boxShadow: [BoxShadow(color: theme.primary.withOpacity(0.5), blurRadius: 8)],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(theme.displayName, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                              Text(theme.description, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: AppColors.textMuted)),
+                            ],
+                          ),
+                          const Spacer(),
+                          if (isSelected)
+                            Icon(Icons.check_circle_rounded, color: theme.accent),
                         ],
                       ),
                     ),

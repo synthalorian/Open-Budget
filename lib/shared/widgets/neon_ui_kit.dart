@@ -11,7 +11,7 @@ class NeonCard extends StatelessWidget {
   final EdgeInsets padding;
   final Color? borderColor;
 
-  const NeonCard({
+  NeonCard({
     required this.child,
     this.glowColor,
     this.hasGlow = true,
@@ -61,7 +61,7 @@ class NeonPulseOrb extends StatefulWidget {
   final double percentUsed;
   final Color baseColor;
 
-  const NeonPulseOrb({
+  NeonPulseOrb({
     required this.percentUsed,
     required this.baseColor,
     super.key,

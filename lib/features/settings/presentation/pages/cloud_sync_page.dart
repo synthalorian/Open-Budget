@@ -18,7 +18,7 @@ class CloudSyncPage extends ConsumerWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left_rounded, color: AppColors.accent),
+          icon: Icon(Icons.chevron_left_rounded, color: AppColors.accent),
           onPressed: () => context.pop(),
         ),
         title: Text('ENCRYPTED_UPLINK', style: AppTextStyles.headlineMainframe.copyWith(fontSize: 20)),
@@ -52,7 +52,7 @@ class CloudSyncPage extends ConsumerWidget {
                             color: AppColors.accent.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.cloud_upload_rounded, color: AppColors.accent, size: 24),
+                          child: Icon(Icons.cloud_upload_rounded, color: AppColors.accent, size: 24),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
@@ -108,7 +108,7 @@ class CloudSyncPage extends ConsumerWidget {
                             color: AppColors.primary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.cloud_download_rounded, color: AppColors.primary, size: 24),
+                          child: Icon(Icons.cloud_download_rounded, color: AppColors.primary, size: 24),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
@@ -159,7 +159,7 @@ class CloudSyncPage extends ConsumerWidget {
                                 await BackupService().restoreFromBackup(file);
                                 if (context.mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Text('DATA_RESTORED_SUCCESSFULLY'),
                                       backgroundColor: AppColors.income,
                                     ),
@@ -194,7 +194,7 @@ class CloudSyncPage extends ConsumerWidget {
               Center(
                 child: Column(
                   children: [
-                    const Icon(Icons.lock_rounded, color: AppColors.textMuted, size: 32),
+                    Icon(Icons.lock_rounded, color: AppColors.textMuted, size: 32),
                     const SizedBox(height: 8),
                     Text(
                       'ZERO_KNOWLEDGE_ENCRYPTION\nYOUR_DATA_NEVER_LEAVES_YOUR_DEVICE_UNENCRYPTED',

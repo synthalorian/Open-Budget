@@ -17,7 +17,7 @@ class CategoriesPage extends ConsumerWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left_rounded, color: AppColors.accent),
+          icon: Icon(Icons.chevron_left_rounded, color: AppColors.accent),
           onPressed: () => context.pop(),
         ),
         title: Text('MODULE_LIBRARY', style: AppTextStyles.headlineMainframe.copyWith(fontSize: 20)),
@@ -36,7 +36,7 @@ class CategoriesPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showCreateCategorySheet(context, ref),
         backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add_rounded, color: Colors.white, size: 32),
+        child: Icon(Icons.add_rounded, color: Colors.white, size: 32),
       ),
     );
   }
@@ -69,7 +69,7 @@ class CategoriesPage extends ConsumerWidget {
           ),
           if (!category.isSystem)
             IconButton(
-              icon: const Icon(Icons.delete_outline_rounded, color: AppColors.expense, size: 20),
+              icon: Icon(Icons.delete_outline_rounded, color: AppColors.expense, size: 20),
               onPressed: () => _showDeleteConfirm(context, ref, category),
             ),
         ],
@@ -122,7 +122,7 @@ class CategoriesPage extends ConsumerWidget {
                 style: AppTextStyles.bodyMain,
                 decoration: InputDecoration(
                   hintText: 'MODULE_NAME',
-                  prefixIcon: const Icon(Icons.terminal_rounded, color: AppColors.accent),
+                  prefixIcon: Icon(Icons.terminal_rounded, color: AppColors.accent),
                   filled: true,
                   fillColor: AppColors.surfaceLight,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),

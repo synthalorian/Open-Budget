@@ -24,7 +24,7 @@ class BudgetPage extends ConsumerWidget {
         title: Text('MAIN FRAME', style: AppTextStyles.headlineMainframe),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings_outlined, color: AppColors.accent),
+            icon: Icon(Icons.settings_outlined, color: AppColors.accent),
             onPressed: () {},
           ),
         ],
@@ -55,7 +55,7 @@ class BudgetPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add_rounded, size: 32),
+        child: Icon(Icons.add_rounded, size: 32),
       ),
     );
   }
@@ -210,7 +210,7 @@ class BudgetPage extends ConsumerWidget {
   }
 
   Widget _buildEmptyState() {
-    return const NeonCard(
+    return NeonCard(
       child: Center(
         child: Text('NO MEMORY MODULES DETECTED'),
       ),

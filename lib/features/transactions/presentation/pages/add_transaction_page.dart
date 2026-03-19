@@ -60,7 +60,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded, color: AppColors.textPrimary),
+          icon: Icon(Icons.close_rounded, color: AppColors.textPrimary),
           onPressed: () => context.pop(),
         ),
         title: Text(_isIncome ? 'DATA INFLOW' : 'DATA OUTFLOW', style: AppTextStyles.headlineMainframe.copyWith(fontSize: 18, color: themeColor)),

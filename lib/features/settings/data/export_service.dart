@@ -371,7 +371,7 @@ class ExportPage extends ConsumerWidget {
                 ),
                 title: const Text('Backup Data'),
                 subtitle: const Text('Create a local backup file'),
-                trailing: const Icon(Icons.chevron_right),
+                trailing: Icon(Icons.chevron_right),
                 onTap: () => _createBackup(context),
               ),
               Divider(height: 1, indent: 56, color: AppColors.surfaceLight),
@@ -386,10 +386,10 @@ class ExportPage extends ConsumerWidget {
                 ),
                 title: const Text('Import Data'),
                 subtitle: const Text('Restore from backup file'),
-                trailing: const Icon(Icons.chevron_right),
+                trailing: Icon(Icons.chevron_right),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Import feature coming soon')),
+                    SnackBar(content: Text('Import feature coming soon')),
                   );
                 },
               ),
@@ -405,7 +405,7 @@ class ExportPage extends ConsumerWidget {
                 ),
                 title: const Text('Clear All Data'),
                 subtitle: const Text('Delete all transactions and budgets'),
-                trailing: const Icon(Icons.chevron_right),
+                trailing: Icon(Icons.chevron_right),
                 onTap: () => _showClearDataDialog(context, ref),
               ),
             ],

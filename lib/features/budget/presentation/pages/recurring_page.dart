@@ -48,7 +48,7 @@ class RecurringPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddRecurringSheet(context, ref, db),
         backgroundColor: AppColors.accent,
-        child: const Icon(Icons.add_rounded, color: AppColors.background),
+        child: Icon(Icons.add_rounded, color: AppColors.background),
       ),
     );
   }
