@@ -41,7 +41,7 @@ class GoalsPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: AppColors.accent,
-        child: const Icon(Icons.track_changes_rounded, color: AppColors.background),
+        child: Icon(Icons.track_changes_rounded, color: AppColors.background),
       ),
     );
   }
@@ -69,7 +69,7 @@ class GoalsPage extends ConsumerWidget {
                   Text(subtitle, style: AppTextStyles.labelNeon.copyWith(fontSize: 8, color: AppColors.textMuted)),
                 ],
               ),
-              const Icon(Icons.radar_rounded, color: AppColors.textMuted, size: 20),
+              Icon(Icons.radar_rounded, color: AppColors.textMuted, size: 20),
             ],
           ),
           const SizedBox(height: 24),

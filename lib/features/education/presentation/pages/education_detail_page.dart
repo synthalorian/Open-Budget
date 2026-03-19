@@ -21,7 +21,7 @@ class EducationDetailPage extends ConsumerWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left_rounded, color: AppColors.accent),
+          icon: Icon(Icons.chevron_left_rounded, color: AppColors.accent),
           onPressed: () => context.pop(),
         ),
         title: Text('DATA_CONSOLE', style: AppTextStyles.labelNeon),
@@ -82,7 +82,7 @@ class EducationDetailPage extends ConsumerWidget {
                       await ref.read(educationNotifierProvider.notifier).completeModule(item.id);
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text('LEARNING_PROTOCOL_COMPLETE: RANK_SYNCHRONIZED'),
                             backgroundColor: AppColors.income,
                           ),
@@ -102,7 +102,7 @@ class EducationDetailPage extends ConsumerWidget {
                 Center(
                   child: Column(
                     children: [
-                      const Icon(Icons.verified_rounded, color: AppColors.income, size: 48),
+                      Icon(Icons.verified_rounded, color: AppColors.income, size: 48),
                       const SizedBox(height: 8),
                       Text('MODULE_ARCHIVED', style: AppTextStyles.labelNeon.copyWith(color: AppColors.income)),
                     ],

@@ -28,7 +28,7 @@ class HomePage extends ConsumerWidget {
         title: Text('THE GRID', style: AppTextStyles.headlineMainframe),
         actions: [
           IconButton(
-            icon: const Icon(Icons.bolt_rounded, color: AppColors.accent),
+            icon: Icon(Icons.bolt_rounded, color: AppColors.accent),
             onPressed: () {},
           ),
         ],
@@ -62,7 +62,7 @@ class HomePage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/add-transaction'),
         backgroundColor: AppColors.accent,
-        child: const Icon(Icons.add_rounded, color: AppColors.background, size: 32),
+        child: Icon(Icons.add_rounded, color: AppColors.background, size: 32),
       ),
     );
   }
@@ -206,7 +206,7 @@ class HomePage extends ConsumerWidget {
   }
 
   Widget _buildEmptyState() {
-    return const NeonCard(
+    return NeonCard(
       child: Center(child: Text('NO DATA STREAMS DETECTED')),
     );
   }

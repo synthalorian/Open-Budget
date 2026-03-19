@@ -107,9 +107,9 @@ class EducationPage extends ConsumerWidget {
                   ),
                 ),
                 if (isDone)
-                  const Icon(Icons.check_circle_rounded, color: AppColors.accent, size: 24)
+                  Icon(Icons.check_circle_rounded, color: AppColors.accent, size: 24)
                 else
-                  const Icon(Icons.lock_outline_rounded, size: 20, color: AppColors.textMuted),
+                  Icon(Icons.lock_outline_rounded, size: 20, color: AppColors.textMuted),
               ],
             ),
           ),

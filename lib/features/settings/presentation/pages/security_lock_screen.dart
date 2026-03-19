@@ -84,7 +84,7 @@ class _SecurityLockScreenState extends ConsumerState<SecurityLockScreen> {
                   ),
                 )
               else
-                const CircularProgressIndicator(
+                CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.accent),
                 ),
             ],
