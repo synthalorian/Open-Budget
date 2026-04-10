@@ -28,10 +28,8 @@ class EncryptionService {
   }
 
   encrypt.Key get _safeKey {
-    if (_key == null) {
-      // Fallback if not initialized (should not happen in normal flow)
-      _key = encrypt.Key.fromUtf8('1984_NEON_GRID_MAINFRAME_KEY_XYZ');
-    }
+    // Fallback if not initialized (should not happen in normal flow)
+    _key ??= encrypt.Key.fromUtf8('1984_NEON_GRID_MAINFRAME_KEY_XYZ');
     return _key!;
   }
 

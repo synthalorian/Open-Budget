@@ -5,7 +5,7 @@ import '../../insights/data/insights_providers.dart';
 import 'notification_settings_provider.dart';
 
 class DigestService {
-  final ProviderRef ref;
+  final Ref ref;
   DigestService(this.ref);
 
   Future<void> checkAndFireDigest() async {

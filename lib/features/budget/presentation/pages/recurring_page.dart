@@ -277,10 +277,4 @@ class RecurringPage extends ConsumerWidget {
   }
 }
 
-extension on Switch {
-  static Widget scaleSize(double scale, {required Widget child}) {
-    return Transform.scale(scale: scale, child: child);
-  }
-}
-// Note: scaleSize logic above is just a placeholder for the custom scaling used in build.
 // Real code uses Transform.scale inside the widget tree.
