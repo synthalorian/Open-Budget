@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -29,7 +30,7 @@ class SecurityService {
       );
       return didAuthenticate;
     } on PlatformException catch (e) {
-      print('Security handshake failed: $e');
+      debugPrint('Security handshake failed: $e');
       return false;
     }
   }

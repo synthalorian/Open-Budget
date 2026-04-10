@@ -45,7 +45,7 @@ class NeonThemes {
     displayName: 'OUTRUN_SUNSET',
     primary: Color(0xFFFF6B6B),
     secondary: Color(0xFFFF8E53),
-    accent: Color(0xFFFFF66),
+    accent: Color(0xFFFFFF66),
     income: Color(0xFF4ECDC4),
     expense: Color(0xFFFF1744),
     warning: Color(0xFFFFAB40),
