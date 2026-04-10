@@ -14,13 +14,6 @@ import '../../../../core/services/security_service.dart';
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationSettings = ref.watch(notificationSettingsProvider);

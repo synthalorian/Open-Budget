@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -25,7 +24,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
   final _descriptionController = TextEditingController();
   
   Category? _selectedCategory;
-  DateTime _selectedDate = DateTime.now();
+  final DateTime _selectedDate = DateTime.now();
   bool get _isIncome => _tabController.index == 1;
 
   @override
@@ -220,6 +219,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
       createdAt: DateTime.now(),
     );
     await DatabaseService().transactions.put(transaction.id, transaction);
+    if (!context.mounted) return;
     context.pop();
   }
 

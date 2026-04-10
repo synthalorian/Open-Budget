@@ -130,7 +130,7 @@ class CloudSyncPage extends ConsumerWidget {
                             type: FileType.custom,
                             allowedExtensions: ['bin'],
                           );
-                          if (result != null && result.files.single.path != null) {
+                          if (result != null && result.files.single.path != null && context.mounted) {
                             final file = File(result.files.single.path!);
                             final confirmed = await showDialog<bool>(
                               context: context,
