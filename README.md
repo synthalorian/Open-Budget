@@ -62,8 +62,8 @@ A fully free, open source personal finance app that helps people budget, teaches
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/open_budget.git
-cd open_budget
+git clone https://github.com/synthalorian/open-budget.git
+cd open-budget
 
 # Install dependencies
 flutter pub get

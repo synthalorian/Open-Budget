@@ -101,7 +101,7 @@ class AppTheme {
         centerTitle: true,
         titleTextStyle: AppTextStyles.headlineTitle,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.card,
         elevation: 0,
         shape: RoundedRectangleBorder(
