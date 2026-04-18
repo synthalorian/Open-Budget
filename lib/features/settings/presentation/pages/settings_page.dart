@@ -90,12 +90,12 @@ class SettingsPage extends ConsumerWidget {
             _buildSectionHeader('OPEN_SOURCE'),
             const SizedBox(height: 16),
             _buildSettingsItem(context, 'GITHUB_REPOSITORY', 'github.com/synthalorian/open-budget', Icons.code_rounded, AppColors.primary, null, url: 'https://github.com/synthalorian/open-budget'),
-            _buildSettingsItem(context, 'SUPPORT_DEVELOPMENT', 'BUY_ME_A_COFFEE', Icons.coffee_rounded, AppColors.warning, null, url: 'https://www.buymeacoffee.com/synthalorian'),
+            _buildSettingsItem(context, 'SUPPORT_DEVELOPMENT', 'buymeacoffee.com/synthalorian', Icons.coffee_rounded, AppColors.warning, null, url: 'https://buymeacoffee.com/synthalorian'),
             
             const SizedBox(height: 48),
             Center(
               child: Text(
-                'OPEN_BUDGET v0.4.0\nBY SYNTH AND SYNTHCLAW 🎹🦞',
+                'OPEN_BUDGET v1.0.0\nBY SYNTH AND SYNTHCLAW 🎹🦞',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.labelNeon.copyWith(fontSize: 10, color: AppColors.textMuted),
               ),
