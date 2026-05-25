@@ -28,15 +28,25 @@ class CategoriesPage extends ConsumerWidget {
       ),
       body: Container(
         decoration: BoxDecoration(gradient: AppColors.spaceGradient),
-        child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
-          itemCount: categories.length,
-          itemBuilder: (context, index) {
-            final category = categories[index];
-            final spent = expensesByCategory[category.id] ?? 0.0;
-            return _buildCategoryCard(context, ref, category, spent, currencyFormat);
-          },
-        ),
+        child: categories.isEmpty
+            ? EnhancedEmptyState(
+                icon: Icons.category_rounded,
+                title: 'NO MODULES INSTALLED',
+                subtitle: 'Create categories to organize your transactions.',
+                color: AppColors.textMuted,
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final category = categories[index];
+                  final spent = expensesByCategory[category.id] ?? 0.0;
+                  return AnimatedListItem(
+                    index: index,
+                    child: _buildCategoryCard(context, ref, category, spent, currencyFormat),
+                  );
+                },
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showCreateCategorySheet(context, ref),

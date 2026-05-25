@@ -40,7 +40,11 @@ class RecurringPage extends ConsumerWidget {
             else
               ...recurring.map((r) {
                 final category = db.categories.get(r.categoryId);
-                return _buildRecurringCard(context, ref, r, category, currency);
+                final index = recurring.indexOf(r);
+                return AnimatedListItem(
+                  index: index,
+                  child: _buildRecurringCard(context, ref, r, category, currency),
+                );
               }),
           ],
         ),
@@ -54,9 +58,16 @@ class RecurringPage extends ConsumerWidget {
   }
 
   Widget _buildEmptyState() {
-    return NeonCard(
-      child: Center(
-        child: Text('NO RECURRING TRANSACTIONS DETECTED', style: AppTextStyles.labelNeon),
+    return EnhancedEmptyState(
+      icon: Icons.history_toggle_off_rounded,
+      title: 'NO RECURRING TRANSACTIONS DETECTED',
+      subtitle: 'Tap the + button to schedule your first recurring transaction.',
+      color: AppColors.textMuted,
+      action: SynthwaveButton(
+        label: 'INITIALIZE PROTOCOL',
+        color: AppColors.accent,
+        icon: Icons.add_rounded,
+        onPressed: null,
       ),
     );
   }

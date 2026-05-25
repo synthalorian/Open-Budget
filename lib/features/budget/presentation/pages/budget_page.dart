@@ -46,12 +46,27 @@ class BudgetPage extends ConsumerWidget {
               SynthwaveSectionHeader(title: 'MEMORY MODULES', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               if (categoryBudgets.isEmpty)
-                _buildEmptyState()
+                EnhancedEmptyState(
+                  icon: Icons.memory_rounded,
+                  title: 'NO MEMORY MODULES DETECTED',
+                  subtitle: 'Tap the + button to initialize your first budget module.',
+                  color: AppColors.textMuted,
+                  action: SynthwaveButton(
+                    label: 'INITIALIZE BUDGET',
+                    color: AppColors.primary,
+                    icon: Icons.add_rounded,
+                    onPressed: () => _showAddBudgetSheet(context, ref, db),
+                  ),
+                )
               else
                 ...categoryBudgets.map((budget) {
                   final usage = budgetUsage[budget.categoryId];
                   final category = db.categories.get(budget.categoryId);
-                  return _buildModuleCard(budget, usage, category, currencyFormat);
+                  final index = categoryBudgets.indexOf(budget);
+                  return AnimatedListItem(
+                    index: index,
+                    child: _buildModuleCard(budget, usage, category, currencyFormat),
+                  );
             }),
             ],
           ),
@@ -275,14 +290,6 @@ class BudgetPage extends ConsumerWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return NeonCard(
-      child: Center(
-        child: Text('NO MEMORY MODULES DETECTED'),
       ),
     );
   }

@@ -39,19 +39,41 @@ class InsightsPage extends ConsumerWidget {
               if (suggestions.isNotEmpty) ...[
                 SynthwaveSectionHeader(title: 'OPTIMIZATION PROTOCOLS', accentColor: AppColors.accent),
                 const SizedBox(height: 16),
-                ...suggestions.map((s) => Padding(
+                ...suggestions.map((s) {
+                  final index = suggestions.indexOf(s);
+                  return AnimatedListItem(
+                    index: index,
+                    child: Padding(
                       padding: const EdgeInsets.only(bottom: 16),
                       child: _buildSuggestionCard(s, currency, ref, context),
-                    )),
+                    ),
+                  );
+                }),
                 const SizedBox(height: 32),
               ],
-              SynthwaveSectionHeader(title: 'SPENDING VELOCITY', accentColor: AppColors.accent),
-              const SizedBox(height: 16),
-              _buildVelocityChart(dailySpend, currency),
+              AnimatedListItem(
+                index: 100,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SynthwaveSectionHeader(title: 'SPENDING VELOCITY', accentColor: AppColors.accent),
+                    const SizedBox(height: 16),
+                    _buildVelocityChart(dailySpend, currency),
+                  ],
+                ),
+              ),
               const SizedBox(height: 32),
-              SynthwaveSectionHeader(title: 'DATA ALLOCATION', accentColor: AppColors.accent),
-              const SizedBox(height: 16),
-              _buildCategoryPie(categoryBreakdown),
+              AnimatedListItem(
+                index: 101,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SynthwaveSectionHeader(title: 'DATA ALLOCATION', accentColor: AppColors.accent),
+                    const SizedBox(height: 16),
+                    _buildCategoryPie(categoryBreakdown),
+                  ],
+                ),
+              ),
               const SizedBox(height: 32),
               SynthwaveSectionHeader(title: 'SYSTEM INSIGHTS', accentColor: AppColors.accent),
               const SizedBox(height: 16),

@@ -60,9 +60,13 @@ class EducationPage extends ConsumerWidget {
         const SizedBox(height: 16),
         ...items.map((item) {
           final p = progressMap[item.id] ?? UserProgress(contentId: item.id);
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: _buildStrategyCard(item, p, ref, ref.context),
+          final index = items.indexOf(item);
+          return AnimatedListItem(
+            index: index,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _buildStrategyCard(item, p, ref, ref.context),
+            ),
           );
         }),
       ],
