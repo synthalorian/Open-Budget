@@ -23,6 +23,7 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     final biometric = _db.settings.get('biometricEnabled') as bool? ?? false;
     final themeName = _db.settings.get('themeName') as String? ?? 'synthwave84';
     final userName = _db.settings.get('userName') as String? ?? 'SYNTH_X_84';
+    final crt = _db.settings.get('crtEffectEnabled') as bool? ?? true;
 
     state = AppSettings(
       enableCollisionAlerts: collision,
@@ -32,6 +33,7 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
       biometricEnabled: biometric,
       themeName: themeName,
       userName: userName,
+      crtEffectEnabled: crt,
     );
   }
 
@@ -43,6 +45,7 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     await _db.settings.put('biometricEnabled', newSettings.biometricEnabled);
     await _db.settings.put('themeName', newSettings.themeName);
     await _db.settings.put('userName', newSettings.userName);
+    await _db.settings.put('crtEffectEnabled', newSettings.crtEffectEnabled);
     state = newSettings;
   }
 
@@ -78,6 +81,11 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
 
   Future<void> setUserName(String userName) async {
     final newSettings = state.copyWith(userName: userName);
+    await updateSettings(newSettings);
+  }
+
+  Future<void> toggleCrtEffect(bool value) async {
+    final newSettings = state.copyWith(crtEffectEnabled: value);
     await updateSettings(newSettings);
   }
 }

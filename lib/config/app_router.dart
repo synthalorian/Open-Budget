@@ -19,6 +19,7 @@ import '../features/settings/presentation/pages/onboarding_page.dart';
 import '../features/settings/presentation/pages/cloud_sync_page.dart';
 import '../features/settings/data/export_service.dart';
 import '../features/settings/data/notification_settings_provider.dart';
+import '../features/settings/data/settings_providers.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final onboardingComplete = ref.watch(notificationSettingsProvider).onboardingComplete;
@@ -146,7 +147,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
 });
 
-class MainShell extends StatelessWidget {
+class MainShell extends ConsumerWidget {
   final Widget child;
 
   const MainShell({super.key, required this.child});
@@ -162,10 +163,13 @@ class MainShell extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = _getCurrentIndex(context);
+    final settings = ref.watch(settingsProvider);
 
     return CRTOverlay(
+      showScanlines: settings.crtEffectEnabled,
+      showVignette: settings.crtEffectEnabled,
       child: Scaffold(
         body: Stack(
           children: [
