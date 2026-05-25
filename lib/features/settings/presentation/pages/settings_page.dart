@@ -14,6 +14,7 @@ import '../../../../main.dart' show lastFlutterError;
 import '../../data/export_service.dart';
 import '../../../../core/services/haptic_service.dart';
 import '../../../../shared/widgets/widget_tour_overlay.dart';
+import '../../../../core/services/localization_service.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -24,18 +25,19 @@ class SettingsPage extends ConsumerWidget {
     final notificationNotifier = ref.read(notificationSettingsProvider.notifier);
     final appSettings = ref.watch(settingsProvider);
     final settingsNotifier = ref.read(settingsProvider.notifier);
+    final l = ref.watch(localeProvider);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('CORE CONFIG', style: AppTextStyles.headlineMainframe),
+        title: Text(l.t('settings_title'), style: AppTextStyles.headlineMainframe),
       ),
       body: Container(
         decoration: BoxDecoration(gradient: AppColors.spaceGradient),
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
           children: [
-            SynthwaveSectionHeader(title: 'IDENTITY', accentColor: AppColors.primary),
+            SynthwaveSectionHeader(title: l.t('section_identity'), accentColor: AppColors.primary),
             const SizedBox(height: 16),
             _buildSettingsItem(
               context,
@@ -49,47 +51,65 @@ class SettingsPage extends ConsumerWidget {
             _buildCurrencySelector(context, settingsNotifier, appSettings),
             
             const SizedBox(height: 32),
-            SynthwaveSectionHeader(title: 'AESTHETICS', accentColor: AppColors.primary),
+            SynthwaveSectionHeader(title: l.t('section_aesthetics'), accentColor: AppColors.primary),
             const SizedBox(height: 16),
             _buildThemeSelector(context, settingsNotifier, appSettings),
             const SizedBox(height: 12),
             _buildToggleItem(
-              'CRT_EFFECT',
-              'Scanlines & vignette overlay',
+              l.t('crt_effect'),
+              l.t('crt_effect_sub'),
               Icons.monitor_rounded,
               appSettings.crtEffectEnabled,
               (val) => settingsNotifier.toggleCrtEffect(val),
             ),
             const SizedBox(height: 12),
             _buildToggleItem(
-              'AUTO_THEME_SCHEDULE',
-              'Dark after 6PM, light after 6AM',
+              l.t('auto_theme'),
+              l.t('auto_theme_sub'),
               Icons.schedule_rounded,
               appSettings.autoThemeSchedule,
               (val) => settingsNotifier.toggleAutoThemeSchedule(val),
             ),
             const SizedBox(height: 12),
             _buildToggleItem(
-              'HAPTIC_FEEDBACK',
-              'Vibration on actions & navigation',
+              l.t('dark_mode_only'),
+              l.t('dark_mode_only_sub'),
+              Icons.dark_mode_rounded,
+              appSettings.darkModeOnly,
+              (val) => settingsNotifier.toggleDarkModeOnly(val),
+            ),
+            const SizedBox(height: 12),
+            _buildToggleItem(
+              l.t('haptic_feedback'),
+              l.t('haptic_feedback_sub'),
               Icons.vibration_rounded,
               appSettings.hapticFeedbackEnabled,
               (val) => settingsNotifier.toggleHapticFeedback(val),
             ),
             const SizedBox(height: 12),
             _buildToggleItem(
-              'SOUND_EFFECTS',
-              'Synthwave system audio cues',
+              l.t('sound_effects'),
+              l.t('sound_effects_sub'),
               Icons.music_note_rounded,
               appSettings.soundEffectsEnabled,
               (val) => settingsNotifier.toggleSoundEffects(val),
+            ),
+            const SizedBox(height: 12),
+            _buildSettingsItem(
+              context,
+              l.t('language'),
+              languageNames[appSettings.language] ?? 'ENGLISH',
+              Icons.language_rounded,
+              AppColors.accent,
+              null,
+              onTap: () => _showLanguageSelector(context, ref, appSettings, settingsNotifier),
             ),
             if (appSettings.autoThemeSchedule) ...[const SizedBox(height: 12)],
             if (appSettings.autoThemeSchedule)
               _buildTimePickerItem(
                 context,
-                'DARK_START_TIME',
-                'Auto-dark begins at',
+                l.t('dark_start_time'),
+                l.t('dark_start_time_sub'),
                 Icons.nights_stay_rounded,
                 appSettings.autoThemeDarkStart,
                 (time) => settingsNotifier.setAutoThemeDarkStart(time),
@@ -98,21 +118,21 @@ class SettingsPage extends ConsumerWidget {
             if (appSettings.autoThemeSchedule)
               _buildTimePickerItem(
                 context,
-                'DARK_END_TIME',
-                'Auto-dark ends at',
+                l.t('dark_end_time'),
+                l.t('dark_end_time_sub'),
                 Icons.wb_sunny_rounded,
                 appSettings.autoThemeDarkEnd,
                 (time) => settingsNotifier.setAutoThemeDarkEnd(time),
               ),
 
             const SizedBox(height: 32),
-            SynthwaveSectionHeader(title: 'MODULES', accentColor: AppColors.accent),
+            SynthwaveSectionHeader(title: l.t('section_modules'), accentColor: AppColors.accent),
             const SizedBox(height: 16),
             _buildSettingsItem(context, 'SPENDING_CATEGORIES', 'CUSTOMIZE DATA_MODULES', Icons.category_rounded, AppColors.accent, '/categories'),
             _buildSettingsItem(context, 'CHRONOS_MODULE', 'RECURRING_TRANSACTIONS', Icons.history_toggle_off_rounded, AppColors.accent, '/recurring'),
             
             const SizedBox(height: 32),
-            SynthwaveSectionHeader(title: 'ALERTS', accentColor: AppColors.accent),
+            SynthwaveSectionHeader(title: l.t('section_alerts'), accentColor: AppColors.accent),
             const SizedBox(height: 16),
             _buildToggleItem(
               'PROJECTION_ALERTS',
@@ -139,9 +159,9 @@ class SettingsPage extends ConsumerWidget {
             ),
 
             const SizedBox(height: 32),
-            SynthwaveSectionHeader(title: 'DATA_MANAGEMENT', accentColor: AppColors.accent),
+            SynthwaveSectionHeader(title: l.t('section_data'), accentColor: AppColors.accent),
             const SizedBox(height: 16),
-            _buildSettingsItem(context, 'WIDGET_TOUR', 'REPLAY_ONBOARDING', Icons.explore_rounded, AppColors.accent, null, onTap: () => _showWidgetTour(context, ref)),
+            _buildSettingsItem(context, l.t('widget_tour'), l.t('widget_tour_sub'), Icons.explore_rounded, AppColors.accent, null, onTap: () => _showWidgetTour(context, ref)),
             const SizedBox(height: 12),
             _buildSettingsItem(context, 'RELEASE_LOG', 'VERSION HISTORY', Icons.history_rounded, AppColors.accent, '/changelog'),
             _buildSettingsItem(context, 'CLOUD_UPLINK', 'ENCRYPTED_SYNC', Icons.cloud_sync_rounded, AppColors.accent, '/cloud-sync'),
@@ -166,12 +186,12 @@ class SettingsPage extends ConsumerWidget {
             ),
             
             const SizedBox(height: 32),
-            SynthwaveSectionHeader(title: 'SECURITY', accentColor: AppColors.accent),
+            SynthwaveSectionHeader(title: l.t('section_security'), accentColor: AppColors.accent),
             const SizedBox(height: 16),
             _buildBiometricToggle(context, settingsNotifier, appSettings.biometricEnabled),
             
             const SizedBox(height: 32),
-            SynthwaveSectionHeader(title: 'OPEN_SOURCE', accentColor: AppColors.primary),
+            SynthwaveSectionHeader(title: l.t('section_open_source'), accentColor: AppColors.primary),
             const SizedBox(height: 16),
             _buildSettingsItem(context, 'GITHUB_REPOSITORY', 'github.com/synthalorian/open-budget', Icons.code_rounded, AppColors.primary, null, url: 'https://github.com/synthalorian/open-budget'),
             _buildSettingsItem(context, 'SUPPORT_DEVELOPMENT', 'buymeacoffee.com/synthalorian', Icons.coffee_rounded, AppColors.warning, null, url: 'https://buymeacoffee.com/synthalorian'),
@@ -196,6 +216,56 @@ class SettingsPage extends ConsumerWidget {
       builder: (ctx) => WidgetTourOverlay(
         child: const SizedBox.shrink(),
         onDismiss: () => Navigator.pop(ctx),
+      ),
+    );
+  }
+
+  void _showLanguageSelector(BuildContext context, WidgetRef ref, AppSettings settings, SettingsNotifier notifier) {
+    final l = ref.read(localeProvider);
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l.t('select_language'), style: AppTextStyles.headlineMainframe.copyWith(fontSize: 18)),
+            const SizedBox(height: 16),
+            ...languageNames.entries.map((entry) {
+              final isSelected = entry.key == settings.language;
+              return GestureDetector(
+                onTap: () {
+                  notifier.setLanguage(entry.key);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.primary.withValues(alpha: 0.2) : AppColors.surfaceLight,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isSelected ? AppColors.primary : Colors.transparent,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.language_rounded, color: isSelected ? AppColors.accent : AppColors.textMuted),
+                      const SizedBox(width: 16),
+                      Text(entry.value, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                      const Spacer(),
+                      if (isSelected)
+                        Icon(Icons.check_circle_rounded, color: AppColors.accent),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }

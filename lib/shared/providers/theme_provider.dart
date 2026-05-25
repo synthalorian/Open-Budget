@@ -32,12 +32,19 @@ bool _isDarkTime(DateTime now, String darkStart, String darkEnd) {
   }
 }
 
-/// Determines the effective theme name based on the auto-schedule setting.
+/// Determines the effective theme name based on the auto-schedule setting
+/// and dark-mode-only override.
 ///
+/// If [darkModeOnly] is true, always returns the user's configured dark theme
+/// regardless of time-of-day schedule.
 /// If autoThemeSchedule is enabled, returns the dark or light theme based on
-/// the user-configurable dark-start and dark-end times. Otherwise returns the
-/// user's manually selected theme.
+/// the user-configurable dark-start and dark-end times.
+/// Otherwise returns the user's manually selected theme.
 String _resolveThemeName(AppSettings settings) {
+  if (settings.darkModeOnly) {
+    return settings.autoThemeDark;
+  }
+
   if (!settings.autoThemeSchedule) return settings.themeName;
 
   final now = DateTime.now();
@@ -48,7 +55,7 @@ String _resolveThemeName(AppSettings settings) {
 /// A timer that fires every 60 seconds so the theme provider can re-evaluate
 /// the auto-schedule at runtime (picks up 6AM/6PM transitions without restart).
 final _themeTickProvider = StreamProvider.autoDispose<void>((ref) {
-  return Stream.periodic(const Duration(seconds: 60), (_) => null);
+  return Stream<void>.periodic(const Duration(seconds: 60), (_) {});
 });
 
 final themeProvider = Provider<ThemeData>((ref) {

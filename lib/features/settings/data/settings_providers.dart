@@ -32,6 +32,8 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     final darkStart = _db.settings.get('autoThemeDarkStart') as String? ?? '18:00';
     final darkEnd = _db.settings.get('autoThemeDarkEnd') as String? ?? '06:00';
     final lastSeen = _db.settings.get('lastSeenVersion') as String? ?? '';
+    final lang = _db.settings.get('language') as String? ?? 'en';
+    final darkOnly = _db.settings.get('darkModeOnly') as bool? ?? false;
 
     state = AppSettings(
       enableCollisionAlerts: collision,
@@ -50,6 +52,8 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
       autoThemeDarkStart: darkStart,
       autoThemeDarkEnd: darkEnd,
       lastSeenVersion: lastSeen,
+      language: lang,
+      darkModeOnly: darkOnly,
     );
   }
 
@@ -70,6 +74,8 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     await _db.settings.put('autoThemeDarkStart', newSettings.autoThemeDarkStart);
     await _db.settings.put('autoThemeDarkEnd', newSettings.autoThemeDarkEnd);
     await _db.settings.put('lastSeenVersion', newSettings.lastSeenVersion);
+    await _db.settings.put('language', newSettings.language);
+    await _db.settings.put('darkModeOnly', newSettings.darkModeOnly);
     state = newSettings;
   }
 
@@ -150,6 +156,16 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
 
   Future<void> setLastSeenVersion(String version) async {
     final newSettings = state.copyWith(lastSeenVersion: version);
+    await updateSettings(newSettings);
+  }
+
+  Future<void> setLanguage(String language) async {
+    final newSettings = state.copyWith(language: language);
+    await updateSettings(newSettings);
+  }
+
+  Future<void> toggleDarkModeOnly(bool value) async {
+    final newSettings = state.copyWith(darkModeOnly: value);
     await updateSettings(newSettings);
   }
 }
