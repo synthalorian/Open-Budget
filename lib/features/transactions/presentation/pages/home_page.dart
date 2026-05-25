@@ -7,6 +7,8 @@ import '../../../../shared/widgets/neon_ui_kit.dart';
 import '../../data/transaction_providers.dart';
 import '../../../insights/data/insights_providers.dart';
 import '../../../../shared/providers/database_provider.dart';
+import '../../../../core/services/haptic_service.dart';
+
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -17,11 +19,10 @@ class HomePage extends ConsumerWidget {
     final income = ref.watch(currentMonthIncomeProvider);
     final expenses = ref.watch(currentMonthExpensesProvider);
     final transactions = ref.watch(transactionsProvider);
-    ref.watch(spendingInsightsProvider); // Keep provider active for notifications
+    ref.watch(spendingInsightsProvider);
     final db = ref.watch(databaseProvider);
     final currencyFormat = NumberFormat.simpleCurrency(decimalDigits: 0);
     final healthScore = ref.watch(healthScoreProvider);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -50,11 +51,26 @@ class HomePage extends ConsumerWidget {
               SynthwaveSectionHeader(title: 'RECENT DATA', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               if (transactions.isEmpty)
-                _buildEmptyState()
+                EnhancedEmptyState(
+                  icon: Icons.radar_rounded,
+                  title: 'NO DATA STREAMS DETECTED',
+                  subtitle: 'Tap the + button to log your first transaction and initialize the grid.',
+                  color: AppColors.textMuted,
+                  action: SynthwaveButton(
+                    label: 'INITIALIZE FIRST STREAM',
+                    color: AppColors.accent,
+                    icon: Icons.add_rounded,
+                    onPressed: () => context.push('/add-transaction'),
+                  ),
+                )
               else
                 ...transactions.take(5).map((t) {
                   final category = db.categories.get(t.categoryId);
-                  return _buildTransactionCard(context, ref, t, category, currencyFormat);
+                  final index = transactions.indexOf(t);
+                  return AnimatedListItem(
+                    index: index,
+                    child: _buildTransactionCard(context, ref, t, category, currencyFormat),
+                  );
                 }),
             ],
           ),
@@ -144,7 +160,10 @@ class HomePage extends ConsumerWidget {
 
   Widget _buildSmallAction(IconData icon, String label, Color color, VoidCallback onTap) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        HapticService().light();
+        onTap();
+      },
       child: NeonCard(
         padding: const EdgeInsets.symmetric(vertical: 16),
         glowColor: color,
@@ -163,6 +182,16 @@ class HomePage extends ConsumerWidget {
   Widget _buildTransactionCard(BuildContext context, WidgetRef ref, dynamic t, dynamic category, NumberFormat currency) {
     final color = Color(category?.color ?? 0xFF9D50BB);
     final accent = t.isIncome ? AppColors.income : AppColors.expense;
+    return Hero(
+      tag: 'tx_${t.id}',
+      flightShuttleBuilder: (flightContext, animation, direction, fromContext, toContext) {
+        return _buildTransactionCardInner(context, ref, t, category, currency, color, accent);
+      },
+      child: _buildTransactionCardInner(context, ref, t, category, currency, color, accent),
+    );
+  }
+
+  Widget _buildTransactionCardInner(BuildContext context, WidgetRef ref, dynamic t, dynamic category, NumberFormat currency, Color color, Color accent) {
     return Dismissible(
       key: ValueKey('tx-${t.id}'),
       direction: DismissDirection.endToStart,
@@ -250,7 +279,7 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Future<bool?> _confirmDelete(BuildContext context, dynamic t, Color accent) {
+  Future<bool?> _confirmDelete(BuildContext context, dynamic t, Color accent) async {
     final label = t.isIncome ? 'INFLOW' : 'OUTFLOW';
     return showDialog<bool>(
       context: context,
@@ -272,12 +301,6 @@ class HomePage extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return NeonCard(
-      child: Center(child: Text('NO DATA STREAMS DETECTED')),
     );
   }
 

@@ -466,6 +466,253 @@ class SynthwaveButton extends StatelessWidget {
   }
 }
 
+/// Animated list item wrapper with staggered fade-in + slide-up entrance.
+/// Each item is delayed by [index] * 60ms for a cascading reveal effect.
+class AnimatedListItem extends StatefulWidget {
+  final int index;
+  final Widget child;
+  final Duration duration;
+  final double offset;
+
+  const AnimatedListItem({
+    super.key,
+    required this.index,
+    required this.child,
+    this.duration = const Duration(milliseconds: 500),
+    this.offset = 24.0,
+  });
+
+  @override
+  State<AnimatedListItem> createState() => _AnimatedListItemState();
+}
+
+class _AnimatedListItemState extends State<AnimatedListItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+  late Animation<Offset> _slide;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
+    _opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+      ),
+    );
+    _slide = Tween<Offset>(
+      begin: Offset(0, widget.offset / 100),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.8, curve: Curves.easeOutCubic),
+      ),
+    );
+    Future.delayed(Duration(milliseconds: widget.index * 60), () {
+      if (mounted) _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: SlideTransition(
+        position: _slide,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+/// Shimmer loading placeholder with a moving gradient.
+class ShimmerLoading extends StatefulWidget {
+  final double height;
+  final double width;
+  final double borderRadius;
+
+  const ShimmerLoading({
+    super.key,
+    this.height = 100,
+    this.width = double.infinity,
+    this.borderRadius = 24,
+  });
+
+  @override
+  State<ShimmerLoading> createState() => _ShimmerLoadingState();
+}
+
+class _ShimmerLoadingState extends State<ShimmerLoading>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
+    _animation = Tween<double>(begin: -2.0, end: 2.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, _) {
+        return Container(
+          width: widget.width,
+          height: widget.height,
+          margin: const EdgeInsets.only(bottom: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            gradient: LinearGradient(
+              begin: Alignment(_animation.value - 1, 0),
+              end: Alignment(_animation.value + 1, 0),
+              colors: [
+                AppColors.surfaceLight.withValues(alpha: 0.3),
+                AppColors.surfaceLight.withValues(alpha: 0.6),
+                AppColors.surfaceLight.withValues(alpha: 0.3),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Enhanced empty state with animated icon and themed messaging.
+class EnhancedEmptyState extends StatefulWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color? color;
+  final Widget? action;
+
+  const EnhancedEmptyState({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.subtitle = '',
+    this.color,
+    this.action,
+  });
+
+  @override
+  State<EnhancedEmptyState> createState() => _EnhancedEmptyStateState();
+}
+
+class _EnhancedEmptyStateState extends State<EnhancedEmptyState>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.08).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color = widget.color ?? AppColors.textMuted;
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 48),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedBuilder(
+              animation: _pulseAnimation,
+              builder: (context, _) {
+                return Transform.scale(
+                  scale: _pulseAnimation.value,
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: color.withValues(alpha: 0.08),
+                      border: Border.all(
+                        color: color.withValues(alpha: 0.2),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Icon(widget.icon, size: 36, color: color),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 24),
+            Text(
+              widget.title,
+              style: AppTextStyles.headlineTitle.copyWith(
+                color: color,
+                fontSize: 18,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            if (widget.subtitle.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Text(
+                  widget.subtitle,
+                  style: AppTextStyles.bodyMain.copyWith(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+            if (widget.action != null) ...[
+              const SizedBox(height: 24),
+              widget.action!,
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// Neon-styled text input field.
 class SynthwaveTextField extends StatelessWidget {
   final TextEditingController controller;
