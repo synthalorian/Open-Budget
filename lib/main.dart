@@ -105,6 +105,8 @@ class _OpenBudgetAppState extends ConsumerState<OpenBudgetApp> {
       title: 'Open Budget',
       debugShowCheckedModeBanner: false,
       theme: theme,
+      themeAnimationDuration: const Duration(milliseconds: 600),
+      themeAnimationCurve: Curves.easeInOut,
       routerConfig: router,
     );
   }

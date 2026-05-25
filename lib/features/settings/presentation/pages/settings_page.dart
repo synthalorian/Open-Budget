@@ -50,6 +50,14 @@ class SettingsPage extends ConsumerWidget {
             SynthwaveSectionHeader(title: 'AESTHETICS', accentColor: AppColors.primary),
             const SizedBox(height: 16),
             _buildThemeSelector(context, settingsNotifier, appSettings),
+            const SizedBox(height: 12),
+            _buildToggleItem(
+              'CRT_EFFECT',
+              'Scanlines & vignette overlay',
+              Icons.monitor_rounded,
+              appSettings.crtEffectEnabled,
+              (val) => settingsNotifier.toggleCrtEffect(val),
+            ),
 
             const SizedBox(height: 32),
             SynthwaveSectionHeader(title: 'MODULES', accentColor: AppColors.accent),

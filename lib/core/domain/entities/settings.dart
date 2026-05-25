@@ -26,6 +26,9 @@ class AppSettings extends Equatable {
   @HiveField(6)
   final String userName;
 
+  @HiveField(7)
+  final bool crtEffectEnabled;
+
   const AppSettings({
     this.enableCollisionAlerts = true,
     this.enableSystemCriticalAlerts = true,
@@ -34,6 +37,7 @@ class AppSettings extends Equatable {
     this.biometricEnabled = false,
     this.themeName = 'synthwave84',
     this.userName = 'SYNTH_X_84',
+    this.crtEffectEnabled = true,
   });
 
   String get currencySymbol {
@@ -85,6 +89,7 @@ class AppSettings extends Equatable {
     bool? biometricEnabled,
     String? themeName,
     String? userName,
+    bool? crtEffectEnabled,
   }) {
     return AppSettings(
       enableCollisionAlerts: enableCollisionAlerts ?? this.enableCollisionAlerts,
@@ -94,6 +99,7 @@ class AppSettings extends Equatable {
       biometricEnabled: biometricEnabled ?? this.biometricEnabled,
       themeName: themeName ?? this.themeName,
       userName: userName ?? this.userName,
+      crtEffectEnabled: crtEffectEnabled ?? this.crtEffectEnabled,
     );
   }
 
@@ -106,5 +112,6 @@ class AppSettings extends Equatable {
         biometricEnabled,
         themeName,
         userName,
+        crtEffectEnabled,
       ];
 }
