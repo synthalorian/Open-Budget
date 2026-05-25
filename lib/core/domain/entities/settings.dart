@@ -53,6 +53,12 @@ class AppSettings extends Equatable {
   @HiveField(15)
   final String lastSeenVersion;
 
+  @HiveField(16)
+  final String language;
+
+  @HiveField(17)
+  final bool darkModeOnly;
+
   const AppSettings({
     this.enableCollisionAlerts = true,
     this.enableSystemCriticalAlerts = true,
@@ -70,6 +76,8 @@ class AppSettings extends Equatable {
     this.autoThemeDarkStart = '18:00',
     this.autoThemeDarkEnd = '06:00',
     this.lastSeenVersion = '',
+    this.language = 'en',
+    this.darkModeOnly = false,
   });
 
   String get currencySymbol {
@@ -130,6 +138,8 @@ class AppSettings extends Equatable {
     String? autoThemeDarkStart,
     String? autoThemeDarkEnd,
     String? lastSeenVersion,
+    String? language,
+    bool? darkModeOnly,
   }) {
     return AppSettings(
       enableCollisionAlerts: enableCollisionAlerts ?? this.enableCollisionAlerts,
@@ -148,6 +158,8 @@ class AppSettings extends Equatable {
       autoThemeDarkStart: autoThemeDarkStart ?? this.autoThemeDarkStart,
       autoThemeDarkEnd: autoThemeDarkEnd ?? this.autoThemeDarkEnd,
       lastSeenVersion: lastSeenVersion ?? this.lastSeenVersion,
+      language: language ?? this.language,
+      darkModeOnly: darkModeOnly ?? this.darkModeOnly,
     );
   }
 
@@ -169,5 +181,7 @@ class AppSettings extends Equatable {
         autoThemeDarkStart,
         autoThemeDarkEnd,
         lastSeenVersion,
+        language,
+        darkModeOnly,
       ];
 }

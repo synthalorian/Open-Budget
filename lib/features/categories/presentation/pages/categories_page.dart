@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/widgets/neon_ui_kit.dart';
 import '../../../../core/domain/entities/category.dart';
 import '../../data/category_providers.dart';
+import '../../../transactions/data/transaction_providers.dart';
 
 class CategoriesPage extends ConsumerWidget {
   const CategoriesPage({super.key});
@@ -12,6 +14,8 @@ class CategoriesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categories = ref.watch(categoriesProvider);
+    final expensesByCategory = ref.watch(expensesByCategoryProvider);
+    final currencyFormat = NumberFormat.simpleCurrency(decimalDigits: 0);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -29,7 +33,8 @@ class CategoriesPage extends ConsumerWidget {
           itemCount: categories.length,
           itemBuilder: (context, index) {
             final category = categories[index];
-            return _buildCategoryCard(context, ref, category);
+            final spent = expensesByCategory[category.id] ?? 0.0;
+            return _buildCategoryCard(context, ref, category, spent, currencyFormat);
           },
         ),
       ),
@@ -41,44 +46,126 @@ class CategoriesPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildCategoryCard(BuildContext context, WidgetRef ref, Category category) {
+  Widget _buildCategoryCard(BuildContext context, WidgetRef ref, Category category, double spent, NumberFormat currency) {
     final color = Color(category.color);
-    return NeonCard(
-      glowColor: color,
-      opacity: 0.2,
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: color.withValues(alpha: 0.3)),
-            ),
-            child: Icon(_getIcon(category.iconName), color: color, size: 24),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(category.name.toUpperCase(), style: AppTextStyles.headlineTitle.copyWith(fontSize: 16)),
-                Text(category.type.name.toUpperCase(), style: AppTextStyles.labelNeon.copyWith(fontSize: 8, color: AppColors.textMuted)),
+    final hasLimit = category.budgetLimit > 0;
+    final percentUsed = hasLimit ? (spent / category.budgetLimit).clamp(0.0, 1.0) : 0.0;
+    final isOverLimit = hasLimit && spent > category.budgetLimit;
+
+    return Column(
+      children: [
+        NeonCard(
+          glowColor: isOverLimit ? AppColors.expense : color,
+          padding: const EdgeInsets.all(16),
+          opacity: 0.2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: color.withValues(alpha: 0.3)),
+                    ),
+                    child: Icon(_getIcon(category.iconName), color: color, size: 24),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(category.name.toUpperCase(), style: AppTextStyles.headlineTitle.copyWith(fontSize: 16)),
+                        const SizedBox(height: 2),
+                        Text(category.type.name.toUpperCase(), style: AppTextStyles.labelNeon.copyWith(fontSize: 8, color: AppColors.textMuted)),
+                      ],
+                    ),
+                  ),
+                  if (!category.isSystem) ...[
+                    IconButton(
+                      icon: Icon(Icons.edit_rounded, color: AppColors.accent, size: 20),
+                      onPressed: () => _showEditCategorySheet(context, ref, category),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete_outline_rounded, color: AppColors.expense, size: 20),
+                      onPressed: () => _showDeleteConfirm(context, ref, category),
+                    ),
+                  ],
+                ],
+              ),
+              // Budget limit row
+              if (hasLimit) ...[
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'SPENT: ${currency.format(spent)}',
+                                style: AppTextStyles.labelNeon.copyWith(
+                                  fontSize: 9,
+                                  color: isOverLimit ? AppColors.expense : AppColors.textMuted,
+                                ),
+                              ),
+                              Text(
+                                'LIMIT: ${currency.format(category.budgetLimit)}',
+                                style: AppTextStyles.labelNeon.copyWith(
+                                  fontSize: 9,
+                                  color: AppColors.textMuted,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          SynthwaveProgressBar(
+                            progress: percentUsed,
+                            color: isOverLimit ? AppColors.expense : color,
+                            isOver: isOverLimit,
+                          ),
+                          const SizedBox(height: 4),
+                          if (isOverLimit)
+                            Text(
+                              'OVER LIMIT: +${currency.format(spent - category.budgetLimit)}',
+                              style: AppTextStyles.labelNeon.copyWith(
+                                fontSize: 9,
+                                color: AppColors.expense,
+                              ),
+                            )
+                          else if (hasLimit)
+                            Text(
+                              'REMAINING: ${currency.format(category.budgetLimit - spent)}',
+                              style: AppTextStyles.labelNeon.copyWith(
+                                fontSize: 9,
+                                color: AppColors.income,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ] else ...[
+                const SizedBox(height: 8),
+                Text(
+                  'NO LIMIT SET',
+                  style: AppTextStyles.labelNeon.copyWith(
+                    fontSize: 8,
+                    color: AppColors.textMuted,
+                  ),
+                ),
               ],
-            ),
+            ],
           ),
-          if (!category.isSystem) ...[
-            IconButton(
-              icon: Icon(Icons.edit_rounded, color: AppColors.accent, size: 20),
-              onPressed: () => _showEditCategorySheet(context, ref, category),
-            ),
-            IconButton(
-              icon: Icon(Icons.delete_outline_rounded, color: AppColors.expense, size: 20),
-              onPressed: () => _showDeleteConfirm(context, ref, category),
-            ),
-          ],
-        ],
-      ),
+        ),
+        const SizedBox(height: 4),
+      ],
     );
   }
 
@@ -221,8 +308,14 @@ class CategoriesPage extends ConsumerWidget {
 
   void _showEditCategorySheet(BuildContext context, WidgetRef ref, Category category) {
     String name = category.name;
+    final limitController = TextEditingController(
+      text: category.budgetLimit > 0 ? category.budgetLimit.toStringAsFixed(0) : '',
+    );
+    final currencyFormat = NumberFormat.simpleCurrency(decimalDigits: 0);
+
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -248,6 +341,22 @@ class CategoriesPage extends ConsumerWidget {
                   labelStyle: AppTextStyles.labelNeon.copyWith(fontSize: 10),
                 ),
               ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: limitController,
+                keyboardType: TextInputType.number,
+                style: AppTextStyles.moneyLarge.copyWith(fontSize: 20),
+                decoration: InputDecoration(
+                  labelText: 'BUDGET LIMIT (${currencyFormat.currencySymbol})',
+                  labelStyle: AppTextStyles.labelNeon.copyWith(fontSize: 10),
+                  prefixIcon: Icon(Icons.account_balance_wallet_rounded, color: AppColors.accent),
+                  filled: true,
+                  fillColor: AppColors.surfaceLight,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                  hintText: '0 = no limit',
+                  hintStyle: TextStyle(color: AppColors.textMuted.withValues(alpha: 0.5)),
+                ),
+              ),
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
@@ -255,8 +364,12 @@ class CategoriesPage extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     if (name.trim().isNotEmpty) {
+                      final limit = double.tryParse(limitController.text) ?? 0;
                       ref.read(categoryNotifierProvider.notifier).updateCategory(
-                        category.copyWith(name: name.trim()),
+                        category.copyWith(
+                          name: name.trim(),
+                          budgetLimit: limit,
+                        ),
                       );
                       Navigator.pop(ctx);
                     }
