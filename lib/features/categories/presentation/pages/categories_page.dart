@@ -106,7 +106,7 @@ class CategoriesPage extends ConsumerWidget {
   void _showCreateCategorySheet(BuildContext context, WidgetRef ref) {
     String name = '';
     String selectedIcon = 'category';
-    int selectedColor = AppColors.primary.value;
+    int selectedColor = AppColors.primary.toARGB32();
     CategoryType selectedType = CategoryType.expense;
 
     showModalBottomSheet(
@@ -160,7 +160,7 @@ class CategoriesPage extends ConsumerWidget {
                     Colors.yellow,
                     Colors.blue,
                   ].map((c) => GestureDetector(
-                    onTap: () => setState(() => selectedColor = c.value),
+                    onTap: () => setState(() => selectedColor = c.toARGB32()),
                     child: Container(
                       width: 40,
                       height: 40,
@@ -168,7 +168,7 @@ class CategoriesPage extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: c,
                         shape: BoxShape.circle,
-                        border: Border.all(color: selectedColor == c.value ? Colors.white : Colors.transparent, width: 2),
+                        border: Border.all(color: selectedColor == c.toARGB32() ? Colors.white : Colors.transparent, width: 2),
                         boxShadow: [BoxShadow(color: c.withValues(alpha: 0.4), blurRadius: 8)],
                       ),
                     ),

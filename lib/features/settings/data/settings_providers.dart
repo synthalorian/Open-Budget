@@ -21,7 +21,7 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     final velocity = _db.settings.get('enableVelocityWarnings') as bool? ?? true;
     final currency = _db.settings.get('currencyCode') as String? ?? 'USD';
     final biometric = _db.settings.get('biometricEnabled') as bool? ?? false;
-    final themeName = _db.settings.get('themeName') as String? ?? 'synthwave';
+    final themeName = _db.settings.get('themeName') as String? ?? 'synthwave84';
     final userName = _db.settings.get('userName') as String? ?? 'SYNTH_X_84';
 
     state = AppSettings(

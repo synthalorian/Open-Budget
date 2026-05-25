@@ -39,7 +39,7 @@ class _AddGoalPageState extends ConsumerState<AddGoalPage> {
       targetAmount: double.parse(_targetController.text),
       targetDate: _targetDate,
       iconName: 'track_changes',
-      color: AppColors.accent.value,
+      color: AppColors.accent.toARGB32(),
       createdAt: DateTime.now(),
       notes: _notesController.text.trim().isEmpty
           ? null

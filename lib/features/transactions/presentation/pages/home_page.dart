@@ -43,11 +43,11 @@ class HomePage extends ConsumerWidget {
             children: [
               _buildCoreBalance(balance, income, expenses, currencyFormat, healthScore),
               const SizedBox(height: 32),
-              _buildSectionHeader('QUICK ACCESS'),
+              SynthwaveSectionHeader(title: 'QUICK ACCESS', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               _buildActionGrid(context),
               const SizedBox(height: 32),
-              _buildSectionHeader('RECENT DATA'),
+              SynthwaveSectionHeader(title: 'RECENT DATA', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               if (transactions.isEmpty)
                 _buildEmptyState()
@@ -55,7 +55,7 @@ class HomePage extends ConsumerWidget {
                 ...transactions.take(5).map((t) {
                   final category = db.categories.get(t.categoryId);
                   return _buildTransactionCard(context, ref, t, category, currencyFormat);
-                }).toList(),
+                }),
             ],
           ),
         ),
@@ -126,16 +126,6 @@ class HomePage extends ConsumerWidget {
       children: [
         Text(label, style: AppTextStyles.labelNeon.copyWith(fontSize: 8, color: AppColors.textMuted)),
         Text(amount, style: AppTextStyles.headlineTitle.copyWith(fontSize: 18, color: color)),
-      ],
-    );
-  }
-
-  Widget _buildSectionHeader(String title) {
-    return Row(
-      children: [
-        Container(width: 4, height: 16, color: AppColors.primary),
-        const SizedBox(width: 8),
-        Text(title, style: AppTextStyles.labelNeon),
       ],
     );
   }
