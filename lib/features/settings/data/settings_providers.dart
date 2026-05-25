@@ -28,6 +28,10 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     final autoDark = _db.settings.get('autoThemeDark') as String? ?? 'synthwave84';
     final autoLight = _db.settings.get('autoThemeLight') as String? ?? 'normal_light';
     final haptic = _db.settings.get('hapticFeedbackEnabled') as bool? ?? true;
+    final sound = _db.settings.get('soundEffectsEnabled') as bool? ?? true;
+    final darkStart = _db.settings.get('autoThemeDarkStart') as String? ?? '18:00';
+    final darkEnd = _db.settings.get('autoThemeDarkEnd') as String? ?? '06:00';
+    final lastSeen = _db.settings.get('lastSeenVersion') as String? ?? '';
 
     state = AppSettings(
       enableCollisionAlerts: collision,
@@ -42,6 +46,10 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
       autoThemeDark: autoDark,
       autoThemeLight: autoLight,
       hapticFeedbackEnabled: haptic,
+      soundEffectsEnabled: sound,
+      autoThemeDarkStart: darkStart,
+      autoThemeDarkEnd: darkEnd,
+      lastSeenVersion: lastSeen,
     );
   }
 
@@ -58,6 +66,10 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     await _db.settings.put('autoThemeDark', newSettings.autoThemeDark);
     await _db.settings.put('autoThemeLight', newSettings.autoThemeLight);
     await _db.settings.put('hapticFeedbackEnabled', newSettings.hapticFeedbackEnabled);
+    await _db.settings.put('soundEffectsEnabled', newSettings.soundEffectsEnabled);
+    await _db.settings.put('autoThemeDarkStart', newSettings.autoThemeDarkStart);
+    await _db.settings.put('autoThemeDarkEnd', newSettings.autoThemeDarkEnd);
+    await _db.settings.put('lastSeenVersion', newSettings.lastSeenVersion);
     state = newSettings;
   }
 
@@ -118,6 +130,26 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
 
   Future<void> toggleHapticFeedback(bool value) async {
     final newSettings = state.copyWith(hapticFeedbackEnabled: value);
+    await updateSettings(newSettings);
+  }
+
+  Future<void> toggleSoundEffects(bool value) async {
+    final newSettings = state.copyWith(soundEffectsEnabled: value);
+    await updateSettings(newSettings);
+  }
+
+  Future<void> setAutoThemeDarkStart(String time) async {
+    final newSettings = state.copyWith(autoThemeDarkStart: time);
+    await updateSettings(newSettings);
+  }
+
+  Future<void> setAutoThemeDarkEnd(String time) async {
+    final newSettings = state.copyWith(autoThemeDarkEnd: time);
+    await updateSettings(newSettings);
+  }
+
+  Future<void> setLastSeenVersion(String version) async {
+    final newSettings = state.copyWith(lastSeenVersion: version);
     await updateSettings(newSettings);
   }
 }

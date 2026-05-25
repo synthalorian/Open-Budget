@@ -6,19 +6,43 @@ import '../../features/settings/data/settings_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/theme/neon_themes.dart';
 
+/// Parse a "HH:MM" time string and return the total minutes from midnight.
+int _parseTimeMinutes(String time) {
+  final parts = time.split(':');
+  final hour = int.tryParse(parts[0]) ?? 18;
+  final minute = int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
+  return hour * 60 + minute;
+}
+
+/// Returns true if [now] falls within the dark-period window defined by
+/// [darkStart] and [darkEnd] (both "HH:MM" strings).
+///
+/// Handles overnight ranges (e.g., 18:00–06:00) correctly.
+bool _isDarkTime(DateTime now, String darkStart, String darkEnd) {
+  final nowMinutes = now.hour * 60 + now.minute;
+  final startMinutes = _parseTimeMinutes(darkStart);
+  final endMinutes = _parseTimeMinutes(darkEnd);
+
+  if (startMinutes <= endMinutes) {
+    // Same-day range (e.g., 06:00–18:00)
+    return nowMinutes >= startMinutes && nowMinutes < endMinutes;
+  } else {
+    // Overnight range (e.g., 18:00–06:00)
+    return nowMinutes >= startMinutes || nowMinutes < endMinutes;
+  }
+}
+
 /// Determines the effective theme name based on the auto-schedule setting.
 ///
 /// If autoThemeSchedule is enabled, returns the dark or light theme based on
-/// current time (dark 18:00–06:00, light 06:00–18:00). Otherwise returns the
+/// the user-configurable dark-start and dark-end times. Otherwise returns the
 /// user's manually selected theme.
 String _resolveThemeName(AppSettings settings) {
   if (!settings.autoThemeSchedule) return settings.themeName;
 
   final now = DateTime.now();
-  // Dark hours: 18:00 (6 PM) to 06:00 (6 AM)
-  final hour = now.hour;
-  final isDarkTime = hour >= 18 || hour < 6;
-  return isDarkTime ? settings.autoThemeDark : settings.autoThemeLight;
+  final isDark = _isDarkTime(now, settings.autoThemeDarkStart, settings.autoThemeDarkEnd);
+  return isDark ? settings.autoThemeDark : settings.autoThemeLight;
 }
 
 /// A timer that fires every 60 seconds so the theme provider can re-evaluate
