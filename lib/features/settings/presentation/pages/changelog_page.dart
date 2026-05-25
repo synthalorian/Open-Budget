@@ -19,6 +19,17 @@ class _ChangelogEntry {
 
 const _changelogEntries = <_ChangelogEntry>[
   _ChangelogEntry(
+    version: 'v1.1.4',
+    date: '2025-05-25',
+    features: [
+      'Multi-language i18n: English & Español with language picker in settings',
+      'Dark mode only override: always use dark theme regardless of schedule',
+      'Per-category spending limits: set/edit limits per category with neon progress bars',
+      'Category limit alerts: over-limit & remaining indicators with color-coded warnings',
+      'Locale-aware UI: MaterialApp now supports locale switching',
+    ],
+  ),
+  _ChangelogEntry(
     version: 'v1.1.3',
     date: '2025-05-25',
     features: [

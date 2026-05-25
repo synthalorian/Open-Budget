@@ -13,6 +13,7 @@ import 'features/settings/data/settings_providers.dart';
 import 'features/settings/presentation/pages/security_lock_screen.dart';
 
 import 'shared/providers/theme_provider.dart';
+import 'core/services/localization_service.dart';
 
 String lastFlutterError = '';
 
@@ -105,6 +106,8 @@ class _OpenBudgetAppState extends ConsumerState<OpenBudgetApp> {
       title: 'Open Budget',
       debugShowCheckedModeBanner: false,
       theme: theme,
+      locale: ref.watch(currentLocaleProvider),
+      supportedLocales: supportedLocales,
       themeAnimationDuration: const Duration(milliseconds: 600),
       themeAnimationCurve: Curves.easeInOut,
       routerConfig: router,
