@@ -23,7 +23,7 @@ class AppColors {
   static Color get textMuted => currentTheme.textMuted;
 
   // Global theme state holder (internal use)
-  static NeonTheme currentTheme = NeonThemes.synthwave;
+  static NeonTheme currentTheme = NeonThemes.synthwave84;
 
   static List<BoxShadow> get primaryGlow => [
     BoxShadow(
