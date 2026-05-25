@@ -4,7 +4,8 @@ import '../domain/entities/education.dart';
 class AppConstants {
   // App info
   static const String appName = 'Open Budget';
-  static const String appVersion = '0.3.0';
+  static const String appVersion = '1.1.2';
+  static const String appBuildDate = '2025-05-25';
   static String currencySymbol = '\$';
   
   // Supported currencies

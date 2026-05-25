@@ -12,6 +12,7 @@ import '../../data/settings_providers.dart';
 import '../../../../core/services/security_service.dart';
 import '../../../../main.dart' show lastFlutterError;
 import '../../data/export_service.dart';
+import '../../../../core/services/haptic_service.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -58,6 +59,22 @@ class SettingsPage extends ConsumerWidget {
               appSettings.crtEffectEnabled,
               (val) => settingsNotifier.toggleCrtEffect(val),
             ),
+            const SizedBox(height: 12),
+            _buildToggleItem(
+              'AUTO_THEME_SCHEDULE',
+              'Dark after 6PM, light after 6AM',
+              Icons.schedule_rounded,
+              appSettings.autoThemeSchedule,
+              (val) => settingsNotifier.toggleAutoThemeSchedule(val),
+            ),
+            const SizedBox(height: 12),
+            _buildToggleItem(
+              'HAPTIC_FEEDBACK',
+              'Vibration on actions & navigation',
+              Icons.vibration_rounded,
+              appSettings.hapticFeedbackEnabled,
+              (val) => settingsNotifier.toggleHapticFeedback(val),
+            ),
 
             const SizedBox(height: 32),
             SynthwaveSectionHeader(title: 'MODULES', accentColor: AppColors.accent),
@@ -95,6 +112,7 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 32),
             SynthwaveSectionHeader(title: 'DATA_MANAGEMENT', accentColor: AppColors.accent),
             const SizedBox(height: 16),
+            _buildSettingsItem(context, 'RELEASE_LOG', 'VERSION HISTORY', Icons.history_rounded, AppColors.accent, '/changelog'),
             _buildSettingsItem(context, 'CLOUD_UPLINK', 'ENCRYPTED_SYNC', Icons.cloud_sync_rounded, AppColors.accent, '/cloud-sync'),
             _buildSettingsItem(context, 'EXPORT_ARCHIVE', 'JSON / CSV', Icons.download_rounded, AppColors.accent, '/export'),
             _buildSettingsItem(
@@ -130,7 +148,7 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 48),
             Center(
               child: Text(
-                'OPEN_BUDGET v1.0.8\nBY SYNTH AND SYNTHCLAW 🎹🦞',
+                'OPEN_BUDGET v${AppConstants.appVersion}\nBY SYNTH AND SYNTHCLAW 🎹🦞',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.labelNeon.copyWith(fontSize: 10, color: AppColors.textMuted),
               ),
@@ -207,7 +225,10 @@ class SettingsPage extends ConsumerWidget {
             ),
             Switch(
               value: value,
-              onChanged: onChanged,
+              onChanged: (v) {
+                HapticService().selection();
+                onChanged(v);
+              },
               activeThumbColor: AppColors.accent,
               activeTrackColor: AppColors.accent.withValues(alpha: 0.3),
               inactiveThumbColor: AppColors.textMuted,
