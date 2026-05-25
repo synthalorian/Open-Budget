@@ -17,9 +17,11 @@ import '../features/categories/presentation/pages/categories_page.dart';
 import '../features/settings/presentation/pages/settings_page.dart';
 import '../features/settings/presentation/pages/onboarding_page.dart';
 import '../features/settings/presentation/pages/cloud_sync_page.dart';
+import '../features/settings/presentation/pages/changelog_page.dart';
 import '../features/settings/data/export_service.dart';
 import '../features/settings/data/notification_settings_provider.dart';
 import '../features/settings/data/settings_providers.dart';
+import '../core/services/haptic_service.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final onboardingComplete = ref.watch(notificationSettingsProvider).onboardingComplete;
@@ -118,6 +120,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               child: RecurringPage(),
             ),
           ),
+          GoRoute(
+            path: '/changelog',
+            name: 'changelog',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: ChangelogPage(),
+            ),
+          ),
         ],
       ),
       GoRoute(
@@ -164,6 +173,8 @@ class MainShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Keep haptic service in sync with settings
+    ref.watch(hapticServiceProvider);
     final currentIndex = _getCurrentIndex(context);
     final settings = ref.watch(settingsProvider);
 
@@ -197,6 +208,7 @@ class MainShell extends ConsumerWidget {
                 indicatorColor: AppColors.primary.withValues(alpha: 0.2),
                 elevation: 0,
                 onDestinationSelected: (index) {
+                  HapticService().light();
                   switch (index) {
                     case 0: context.go('/'); break;
                     case 1: context.go('/budget'); break;
