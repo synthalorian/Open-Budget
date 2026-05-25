@@ -33,7 +33,7 @@ class RecurringPage extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
           children: [
-            _buildHeader('ACTIVE_PROTOCOLS'),
+            SynthwaveSectionHeader(title: 'ACTIVE_PROTOCOLS', accentColor: AppColors.accent),
             const SizedBox(height: 16),
             if (recurring.isEmpty)
               _buildEmptyState()
@@ -41,7 +41,7 @@ class RecurringPage extends ConsumerWidget {
               ...recurring.map((r) {
                 final category = db.categories.get(r.categoryId);
                 return _buildRecurringCard(context, ref, r, category, currency);
-              }).toList(),
+              }),
           ],
         ),
       ),
@@ -50,16 +50,6 @@ class RecurringPage extends ConsumerWidget {
         backgroundColor: AppColors.accent,
         child: Icon(Icons.add_rounded, color: AppColors.background),
       ),
-    );
-  }
-
-  Widget _buildHeader(String title) {
-    return Row(
-      children: [
-        Container(width: 4, height: 16, color: AppColors.primary),
-        const SizedBox(width: 8),
-        Text(title, style: AppTextStyles.labelNeon),
-      ],
     );
   }
 
@@ -192,7 +182,7 @@ class RecurringPage extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: dayOfMonth,
+                      initialValue: dayOfMonth,
                       dropdownColor: AppColors.surface,
                       decoration: _inputDecoration('DAY', Icons.calendar_month_rounded),
                       items: List.generate(31, (index) => index + 1)
@@ -204,7 +194,7 @@ class RecurringPage extends ConsumerWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: DropdownButtonFormField<Category>(
-                      value: selectedCategory,
+                      initialValue: selectedCategory,
                       dropdownColor: AppColors.surface,
                       decoration: _inputDecoration('CATEGORY', Icons.category_rounded),
                       items: categories.map<DropdownMenuItem<Category>>((c) => DropdownMenuItem(

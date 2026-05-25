@@ -29,14 +29,14 @@ class CloudSyncPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionHeader('DATA_SOVEREIGNTY'),
+              SynthwaveSectionHeader(title: 'DATA_SOVEREIGNTY', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               Text(
                 'Your data never leaves your device unencrypted. Create secure backups and restore them anywhere.',
                 style: AppTextStyles.bodyMain.copyWith(fontSize: 12, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 32),
-              _buildSectionHeader('EXPORT_PROTOCOL'),
+              SynthwaveSectionHeader(title: 'EXPORT_PROTOCOL', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               NeonCard(
                 glowColor: AppColors.accent,
@@ -92,7 +92,7 @@ class CloudSyncPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              _buildSectionHeader('IMPORT_PROTOCOL'),
+              SynthwaveSectionHeader(title: 'IMPORT_PROTOCOL', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               NeonCard(
                 glowColor: AppColors.primary,
@@ -210,13 +210,4 @@ class CloudSyncPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
-    return Row(
-      children: [
-        Container(width: 4, height: 16, color: AppColors.accent),
-        const SizedBox(width: 8),
-        Text(title, style: AppTextStyles.labelNeon),
-      ],
-    );
-  }
 }
