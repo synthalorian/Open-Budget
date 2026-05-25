@@ -22,6 +22,7 @@ import '../features/settings/data/export_service.dart';
 import '../features/settings/data/notification_settings_provider.dart';
 import '../features/settings/data/settings_providers.dart';
 import '../core/services/haptic_service.dart';
+import '../shared/widgets/widget_tour_overlay.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final onboardingComplete = ref.watch(notificationSettingsProvider).onboardingComplete;
@@ -177,8 +178,9 @@ class MainShell extends ConsumerWidget {
     ref.watch(hapticServiceProvider);
     final currentIndex = _getCurrentIndex(context);
     final settings = ref.watch(settingsProvider);
+    final showTour = ref.watch(shouldShowTourProvider);
 
-    return CRTOverlay(
+    Widget shell = CRTOverlay(
       showScanlines: settings.crtEffectEnabled,
       showVignette: settings.crtEffectEnabled,
       child: Scaffold(
@@ -250,5 +252,14 @@ class MainShell extends ConsumerWidget {
         ),
       ),
     );
+
+    if (showTour) {
+      return WidgetTourOverlay(
+        child: shell,
+        onDismiss: () {},
+      );
+    }
+
+    return shell;
   }
 }

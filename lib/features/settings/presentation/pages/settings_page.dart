@@ -13,6 +13,7 @@ import '../../../../core/services/security_service.dart';
 import '../../../../main.dart' show lastFlutterError;
 import '../../data/export_service.dart';
 import '../../../../core/services/haptic_service.dart';
+import '../../../../shared/widgets/widget_tour_overlay.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -75,6 +76,34 @@ class SettingsPage extends ConsumerWidget {
               appSettings.hapticFeedbackEnabled,
               (val) => settingsNotifier.toggleHapticFeedback(val),
             ),
+            const SizedBox(height: 12),
+            _buildToggleItem(
+              'SOUND_EFFECTS',
+              'Synthwave system audio cues',
+              Icons.music_note_rounded,
+              appSettings.soundEffectsEnabled,
+              (val) => settingsNotifier.toggleSoundEffects(val),
+            ),
+            if (appSettings.autoThemeSchedule) ...[const SizedBox(height: 12)],
+            if (appSettings.autoThemeSchedule)
+              _buildTimePickerItem(
+                context,
+                'DARK_START_TIME',
+                'Auto-dark begins at',
+                Icons.nights_stay_rounded,
+                appSettings.autoThemeDarkStart,
+                (time) => settingsNotifier.setAutoThemeDarkStart(time),
+              ),
+            if (appSettings.autoThemeSchedule) ...[const SizedBox(height: 12)],
+            if (appSettings.autoThemeSchedule)
+              _buildTimePickerItem(
+                context,
+                'DARK_END_TIME',
+                'Auto-dark ends at',
+                Icons.wb_sunny_rounded,
+                appSettings.autoThemeDarkEnd,
+                (time) => settingsNotifier.setAutoThemeDarkEnd(time),
+              ),
 
             const SizedBox(height: 32),
             SynthwaveSectionHeader(title: 'MODULES', accentColor: AppColors.accent),
@@ -112,6 +141,8 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 32),
             SynthwaveSectionHeader(title: 'DATA_MANAGEMENT', accentColor: AppColors.accent),
             const SizedBox(height: 16),
+            _buildSettingsItem(context, 'WIDGET_TOUR', 'REPLAY_ONBOARDING', Icons.explore_rounded, AppColors.accent, null, onTap: () => _showWidgetTour(context, ref)),
+            const SizedBox(height: 12),
             _buildSettingsItem(context, 'RELEASE_LOG', 'VERSION HISTORY', Icons.history_rounded, AppColors.accent, '/changelog'),
             _buildSettingsItem(context, 'CLOUD_UPLINK', 'ENCRYPTED_SYNC', Icons.cloud_sync_rounded, AppColors.accent, '/cloud-sync'),
             _buildSettingsItem(context, 'EXPORT_ARCHIVE', 'JSON / CSV', Icons.download_rounded, AppColors.accent, '/export'),
@@ -157,6 +188,104 @@ class SettingsPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void _showWidgetTour(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (ctx) => WidgetTourOverlay(
+        child: const SizedBox.shrink(),
+        onDismiss: () => Navigator.pop(ctx),
+      ),
+    );
+  }
+
+  Widget _buildTimePickerItem(
+    BuildContext context,
+    String title,
+    String subtitle,
+    IconData icon,
+    String currentTime,
+    Function(String) onTimePicked,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: GestureDetector(
+        onTap: () => _showTimePicker(context, currentTime, onTimePicked),
+        child: NeonCard(
+          padding: const EdgeInsets.all(16),
+          opacity: 0.2,
+          hasGlow: true,
+          glowColor: AppColors.primary.withValues(alpha: 0.3),
+          borderColor: AppColors.primary.withValues(alpha: 0.4),
+          child: Row(
+            children: [
+              Icon(icon, color: AppColors.primary, size: 24),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: AppTextStyles.headlineTitle.copyWith(fontSize: 14)),
+                    const SizedBox(height: 4),
+                    Text(subtitle, style: AppTextStyles.bodyMain.copyWith(fontSize: 10, color: AppColors.textMuted)),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Text(
+                  currentTime,
+                  style: AppTextStyles.labelNeon.copyWith(
+                    color: AppColors.accent,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(Icons.edit_rounded, color: AppColors.textMuted, size: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showTimePicker(BuildContext context, String currentTime, Function(String) onTimePicked) {
+    final parts = currentTime.split(':');
+    final initialHour = int.tryParse(parts[0]) ?? 18;
+    final initialMinute = int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
+
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: initialHour, minute: initialMinute),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: AppColors.accent,
+              surface: AppColors.surface,
+            ),
+            dialogTheme: const DialogThemeData(
+              backgroundColor: Color(0xFF1A0030),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    ).then((time) {
+      if (time != null) {
+        final formatted = '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+        onTimePicked(formatted);
+      }
+    });
   }
 
   Widget _buildSettingsItem(BuildContext context, String title, String value, IconData icon, Color color, String? route, {String? url, VoidCallback? onTap}) {

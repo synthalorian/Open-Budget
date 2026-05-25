@@ -19,6 +19,17 @@ class _ChangelogEntry {
 
 const _changelogEntries = <_ChangelogEntry>[
   _ChangelogEntry(
+    version: 'v1.1.3',
+    date: '2025-05-25',
+    features: [
+      'Synthwave sound effects system with per-action audio cues',
+      'Custom configurable auto-theme dark start/end times',
+      'Widget tour overlay on version update with feature highlights',
+      'Sound effects toggle (independent from haptic toggle)',
+      'Replayable widget tour from CORE CONFIG > DATA MANAGEMENT',
+    ],
+  ),
+  _ChangelogEntry(
     version: 'v1.1.2',
     date: '2025-05-25',
     features: [

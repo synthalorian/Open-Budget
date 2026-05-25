@@ -41,6 +41,18 @@ class AppSettings extends Equatable {
   @HiveField(11)
   final bool hapticFeedbackEnabled;
 
+  @HiveField(12)
+  final bool soundEffectsEnabled;
+
+  @HiveField(13)
+  final String autoThemeDarkStart;
+
+  @HiveField(14)
+  final String autoThemeDarkEnd;
+
+  @HiveField(15)
+  final String lastSeenVersion;
+
   const AppSettings({
     this.enableCollisionAlerts = true,
     this.enableSystemCriticalAlerts = true,
@@ -54,6 +66,10 @@ class AppSettings extends Equatable {
     this.autoThemeDark = 'synthwave84',
     this.autoThemeLight = 'normal_light',
     this.hapticFeedbackEnabled = true,
+    this.soundEffectsEnabled = true,
+    this.autoThemeDarkStart = '18:00',
+    this.autoThemeDarkEnd = '06:00',
+    this.lastSeenVersion = '',
   });
 
   String get currencySymbol {
@@ -110,6 +126,10 @@ class AppSettings extends Equatable {
     String? autoThemeDark,
     String? autoThemeLight,
     bool? hapticFeedbackEnabled,
+    bool? soundEffectsEnabled,
+    String? autoThemeDarkStart,
+    String? autoThemeDarkEnd,
+    String? lastSeenVersion,
   }) {
     return AppSettings(
       enableCollisionAlerts: enableCollisionAlerts ?? this.enableCollisionAlerts,
@@ -124,6 +144,10 @@ class AppSettings extends Equatable {
       autoThemeDark: autoThemeDark ?? this.autoThemeDark,
       autoThemeLight: autoThemeLight ?? this.autoThemeLight,
       hapticFeedbackEnabled: hapticFeedbackEnabled ?? this.hapticFeedbackEnabled,
+      soundEffectsEnabled: soundEffectsEnabled ?? this.soundEffectsEnabled,
+      autoThemeDarkStart: autoThemeDarkStart ?? this.autoThemeDarkStart,
+      autoThemeDarkEnd: autoThemeDarkEnd ?? this.autoThemeDarkEnd,
+      lastSeenVersion: lastSeenVersion ?? this.lastSeenVersion,
     );
   }
 
@@ -141,5 +165,9 @@ class AppSettings extends Equatable {
         autoThemeDark,
         autoThemeLight,
         hapticFeedbackEnabled,
+        soundEffectsEnabled,
+        autoThemeDarkStart,
+        autoThemeDarkEnd,
+        lastSeenVersion,
       ];
 }
