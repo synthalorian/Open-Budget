@@ -33,7 +33,7 @@ class SettingsPage extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
           children: [
-            _buildSectionHeader('IDENTITY'),
+            SynthwaveSectionHeader(title: 'IDENTITY', accentColor: AppColors.primary),
             const SizedBox(height: 16),
             _buildSettingsItem(
               context,
@@ -47,18 +47,18 @@ class SettingsPage extends ConsumerWidget {
             _buildCurrencySelector(context, settingsNotifier, appSettings),
             
             const SizedBox(height: 32),
-            _buildSectionHeader('AESTHETICS'),
+            SynthwaveSectionHeader(title: 'AESTHETICS', accentColor: AppColors.primary),
             const SizedBox(height: 16),
             _buildThemeSelector(context, settingsNotifier, appSettings),
 
             const SizedBox(height: 32),
-            _buildSectionHeader('MODULES'),
+            SynthwaveSectionHeader(title: 'MODULES', accentColor: AppColors.accent),
             const SizedBox(height: 16),
             _buildSettingsItem(context, 'SPENDING_CATEGORIES', 'CUSTOMIZE DATA_MODULES', Icons.category_rounded, AppColors.accent, '/categories'),
             _buildSettingsItem(context, 'CHRONOS_MODULE', 'RECURRING_TRANSACTIONS', Icons.history_toggle_off_rounded, AppColors.accent, '/recurring'),
             
             const SizedBox(height: 32),
-            _buildSectionHeader('ALERTS'),
+            SynthwaveSectionHeader(title: 'ALERTS', accentColor: AppColors.accent),
             const SizedBox(height: 16),
             _buildToggleItem(
               'PROJECTION_ALERTS',
@@ -85,7 +85,7 @@ class SettingsPage extends ConsumerWidget {
             ),
 
             const SizedBox(height: 32),
-            _buildSectionHeader('DATA_MANAGEMENT'),
+            SynthwaveSectionHeader(title: 'DATA_MANAGEMENT', accentColor: AppColors.accent),
             const SizedBox(height: 16),
             _buildSettingsItem(context, 'CLOUD_UPLINK', 'ENCRYPTED_SYNC', Icons.cloud_sync_rounded, AppColors.accent, '/cloud-sync'),
             _buildSettingsItem(context, 'EXPORT_ARCHIVE', 'JSON / CSV', Icons.download_rounded, AppColors.accent, '/export'),
@@ -109,12 +109,12 @@ class SettingsPage extends ConsumerWidget {
             ),
             
             const SizedBox(height: 32),
-            _buildSectionHeader('SECURITY'),
+            SynthwaveSectionHeader(title: 'SECURITY', accentColor: AppColors.accent),
             const SizedBox(height: 16),
             _buildBiometricToggle(context, settingsNotifier, appSettings.biometricEnabled),
             
             const SizedBox(height: 32),
-            _buildSectionHeader('OPEN_SOURCE'),
+            SynthwaveSectionHeader(title: 'OPEN_SOURCE', accentColor: AppColors.primary),
             const SizedBox(height: 16),
             _buildSettingsItem(context, 'GITHUB_REPOSITORY', 'github.com/synthalorian/open-budget', Icons.code_rounded, AppColors.primary, null, url: 'https://github.com/synthalorian/open-budget'),
             _buildSettingsItem(context, 'SUPPORT_DEVELOPMENT', 'buymeacoffee.com/synthalorian', Icons.coffee_rounded, AppColors.warning, null, url: 'https://buymeacoffee.com/synthalorian'),
@@ -130,16 +130,6 @@ class SettingsPage extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSectionHeader(String title) {
-    return Row(
-      children: [
-        Container(width: 4, height: 16, color: AppColors.primary),
-        const SizedBox(width: 8),
-        Text(title, style: AppTextStyles.labelNeon),
-      ],
     );
   }
 

@@ -1,6 +1,9 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../core/theme/app_theme.dart';
+import '../shared/widgets/neon_ui_kit.dart';
 import '../features/budget/presentation/pages/budget_page.dart';
 import '../features/budget/presentation/pages/recurring_page.dart';
 import '../features/transactions/presentation/pages/home_page.dart';
@@ -162,49 +165,73 @@ class MainShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentIndex = _getCurrentIndex(context);
 
-    return Scaffold(
-      body: child,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: currentIndex,
-        height: 65,
-        backgroundColor: Colors.transparent,
-        indicatorColor: Colors.transparent,
-        onDestinationSelected: (index) {
-          switch (index) {
-            case 0: context.go('/'); break;
-            case 1: context.go('/budget'); break;
-            case 2: context.go('/goals'); break;
-            case 3: context.go('/insights'); break;
-            case 4: context.go('/education'); break;
-            case 5: context.go('/settings'); break;
-          }
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.grid_view_rounded),
-            label: 'GRID',
+    return CRTOverlay(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            // Synthwave grid background
+            SynthwaveGrid(),
+            child,
+          ],
+        ),
+        bottomNavigationBar: ClipRRect(
+          child: Stack(
+            children: [
+              // Frosted glass nav bar
+              Positioned.fill(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  child: Container(
+                    color: AppColors.background.withValues(alpha: 0.6),
+                  ),
+                ),
+              ),
+              NavigationBar(
+                selectedIndex: currentIndex,
+                height: 65,
+                backgroundColor: Colors.transparent,
+                indicatorColor: AppColors.primary.withValues(alpha: 0.2),
+                elevation: 0,
+                onDestinationSelected: (index) {
+                  switch (index) {
+                    case 0: context.go('/'); break;
+                    case 1: context.go('/budget'); break;
+                    case 2: context.go('/goals'); break;
+                    case 3: context.go('/insights'); break;
+                    case 4: context.go('/education'); break;
+                    case 5: context.go('/settings'); break;
+                  }
+                },
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.grid_view_rounded),
+                    label: 'GRID',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.account_balance_wallet_rounded),
+                    label: 'BUDGET',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.flag_rounded),
+                    label: 'GOALS',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.insights_rounded),
+                    label: 'INSIGHTS',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.psychology_rounded),
+                    label: 'DOJO',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.settings_rounded),
+                    label: 'CORE',
+                  ),
+                ],
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.account_balance_wallet_rounded),
-            label: 'BUDGET',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.flag_rounded),
-            label: 'GOALS',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.insights_rounded),
-            label: 'INSIGHTS',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.psychology_rounded),
-            label: 'DOJO',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_rounded),
-            label: 'CORE',
-          ),
-        ],
+        ),
       ),
     );
   }

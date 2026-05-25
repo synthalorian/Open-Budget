@@ -31,13 +31,13 @@ class InsightsPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (projection != null) ...[
-                _buildSectionHeader('AI PROJECTION'),
+                SynthwaveSectionHeader(title: 'AI PROJECTION', accentColor: AppColors.accent),
                 const SizedBox(height: 16),
                 _buildProjectionCard(projection, currency),
                 const SizedBox(height: 32),
               ],
               if (suggestions.isNotEmpty) ...[
-                _buildSectionHeader('OPTIMIZATION PROTOCOLS'),
+                SynthwaveSectionHeader(title: 'OPTIMIZATION PROTOCOLS', accentColor: AppColors.accent),
                 const SizedBox(height: 16),
                 ...suggestions.map((s) => Padding(
                       padding: const EdgeInsets.only(bottom: 16),
@@ -45,15 +45,15 @@ class InsightsPage extends ConsumerWidget {
                     )),
                 const SizedBox(height: 32),
               ],
-              _buildSectionHeader('SPENDING VELOCITY'),
+              SynthwaveSectionHeader(title: 'SPENDING VELOCITY', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               _buildVelocityChart(dailySpend, currency),
               const SizedBox(height: 32),
-              _buildSectionHeader('DATA ALLOCATION'),
+              SynthwaveSectionHeader(title: 'DATA ALLOCATION', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               _buildCategoryPie(categoryBreakdown),
               const SizedBox(height: 32),
-              _buildSectionHeader('SYSTEM INSIGHTS'),
+              SynthwaveSectionHeader(title: 'SYSTEM INSIGHTS', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               if (projection != null && projection.alerts.isNotEmpty)
                 ...projection.alerts.map((a) => Padding(
@@ -199,17 +199,6 @@ class InsightsPage extends ConsumerWidget {
       default: return Icons.insights_rounded;
     }
   }
-
-  Widget _buildSectionHeader(String title) {
-    return Row(
-      children: [
-        Container(width: 4, height: 16, color: AppColors.accent),
-        const SizedBox(width: 8),
-        Text(title, style: AppTextStyles.labelNeon),
-      ],
-    );
-  }
-
   Widget _buildVelocityChart(List<DailySpend> dailySpend, NumberFormat currency) {
     final spots = dailySpend.map((e) => FlSpot(e.day.toDouble(), e.amount)).toList();
     

@@ -43,7 +43,7 @@ class BudgetPage extends ConsumerWidget {
             children: [
               _buildPulseDashboard(totalUsage, currencyFormat),
               const SizedBox(height: 48),
-              _buildGridHeader('MEMORY MODULES'),
+              SynthwaveSectionHeader(title: 'MEMORY MODULES', accentColor: AppColors.accent),
               const SizedBox(height: 16),
               if (categoryBudgets.isEmpty)
                 _buildEmptyState()
@@ -52,7 +52,7 @@ class BudgetPage extends ConsumerWidget {
                   final usage = budgetUsage[budget.categoryId];
                   final category = db.categories.get(budget.categoryId);
                   return _buildModuleCard(budget, usage, category, currencyFormat);
-                }).toList(),
+            }),
             ],
           ),
         ),
@@ -108,7 +108,7 @@ class BudgetPage extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<BudgetPeriod>(
-                      value: period,
+                      initialValue: period,
                       dropdownColor: AppColors.surface,
                       decoration: _inputDecoration('PERIOD', Icons.calendar_month_rounded),
                       items: BudgetPeriod.values.map<DropdownMenuItem<BudgetPeriod>>((p) => DropdownMenuItem<BudgetPeriod>(
@@ -121,7 +121,7 @@ class BudgetPage extends ConsumerWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: DropdownButtonFormField<Category>(
-                      value: selectedCategory,
+                      initialValue: selectedCategory,
                       dropdownColor: AppColors.surface,
                       decoration: _inputDecoration('CATEGORY', Icons.category_rounded),
                       items: categories.map<DropdownMenuItem<Category>>((c) => DropdownMenuItem<Category>(
@@ -203,20 +203,6 @@ class BudgetPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildGridHeader(String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 20,
-          color: AppColors.accent,
-        ),
-        const SizedBox(width: 8),
-        Text(title, style: AppTextStyles.labelNeon),
-      ],
-    );
-  }
-
   Widget _buildModuleCard(
     dynamic budget,
     BudgetUsage? usage,
@@ -267,7 +253,7 @@ class BudgetPage extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
-          _buildProgressBar(usage?.percentUsed ?? 0, categoryColor, isOver),
+          SynthwaveProgressBar(progress: usage?.percentUsed ?? 0, color: categoryColor, isOver: isOver),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,39 +276,6 @@ class BudgetPage extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildProgressBar(double progress, Color color, bool isOver) {
-    return Stack(
-      children: [
-        Container(
-          height: 6,
-          decoration: BoxDecoration(
-            color: AppColors.surfaceLight,
-            borderRadius: BorderRadius.circular(3),
-          ),
-        ),
-        FractionallySizedBox(
-          widthFactor: progress.clamp(0.0, 1.0),
-          child: Container(
-            height: 6,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [color.withValues(alpha: 0.5), color],
-              ),
-              borderRadius: BorderRadius.circular(3),
-              boxShadow: [
-                BoxShadow(
-                  color: color.withValues(alpha: 0.4),
-                  blurRadius: 4,
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 

@@ -52,18 +52,11 @@ class EducationPage extends ConsumerWidget {
       ),
     );
   }
-
   Widget _buildSection(String title, List<EducationContent> items, Map<String, UserProgress> progressMap, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Container(width: 4, height: 16, color: AppColors.primary),
-            const SizedBox(width: 8),
-            Text(title, style: AppTextStyles.labelNeon),
-          ],
-        ),
+        SynthwaveSectionHeader(title: title, accentColor: AppColors.primary),
         const SizedBox(height: 16),
         ...items.map((item) {
           final p = progressMap[item.id] ?? UserProgress(contentId: item.id);
@@ -71,7 +64,7 @@ class EducationPage extends ConsumerWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: _buildStrategyCard(item, p, ref, ref.context),
           );
-        }).toList(),
+        }),
       ],
     );
   }

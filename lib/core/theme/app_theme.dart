@@ -46,7 +46,7 @@ class AppColors {
     return LinearGradient(
       colors: [
         currentTheme.background,
-        isLight ? currentTheme.surfaceLight : const Color(0xFF1A1A2E),
+        isLight ? currentTheme.surfaceLight : currentTheme.surface,
       ],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
@@ -127,15 +127,15 @@ class AppTheme {
         ),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: AppColors.background.withValues(alpha: 0.8),
+        backgroundColor: Colors.transparent,
         selectedItemColor: neonTheme.accent,
         unselectedItemColor: AppColors.textMuted,
         elevation: 0,
         type: BottomNavigationBarType.fixed,
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: AppColors.background.withValues(alpha: 0.8),
-        indicatorColor: neonTheme.primary.withValues(alpha: 0.2),
+        backgroundColor: Colors.transparent,
+        indicatorColor: neonTheme.primary.withValues(alpha: 0.25),
         labelTextStyle: WidgetStateProperty.all(
           AppTextStyles.labelNeon.copyWith(fontSize: 10),
         ),
@@ -146,9 +146,118 @@ class AppTheme {
           return IconThemeData(color: AppColors.textMuted);
         }),
       ),
+      dividerTheme: DividerThemeData(
+        color: AppColors.surfaceLight,
+        thickness: 0.5,
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: AppColors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+          side: BorderSide(color: AppColors.primary.withValues(alpha: 0.3)),
+        ),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return neonTheme.accent;
+          }
+          return AppColors.textMuted;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return neonTheme.accent.withValues(alpha: 0.3);
+          }
+          return AppColors.surfaceLight;
+        }),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: neonTheme.accent,
+        foregroundColor: AppColors.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: AppColors.surface,
+        contentTextStyle: AppTextStyles.labelNeon.copyWith(fontSize: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: neonTheme.primary.withValues(alpha: 0.3)),
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.surfaceLight,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: AppColors.surfaceLight,
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: neonTheme.accent.withValues(alpha: 0.5),
+            width: 1.5,
+          ),
+        ),
+        labelStyle: AppTextStyles.labelNeon.copyWith(
+          fontSize: 8,
+          color: AppColors.textMuted,
+        ),
+        hintStyle: TextStyle(color: AppColors.textMuted),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: neonTheme.accent,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: neonTheme.primary,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 0,
+        ),
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: AppColors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: AppColors.surfaceLight),
+        ),
+      ),
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: AppColors.surface,
+        surfaceTintColor: Colors.transparent,
+        headerBackgroundColor: neonTheme.primary.withValues(alpha: 0.3),
+        headerForegroundColor: AppColors.textPrimary,
+        dayStyle: AppTextStyles.bodyMain,
+        weekdayStyle: AppTextStyles.labelNeon.copyWith(fontSize: 10),
+        yearStyle: AppTextStyles.bodyMain,
+        todayBackgroundColor: WidgetStateProperty.all(neonTheme.primary.withValues(alpha: 0.3)),
+        todayForegroundColor: WidgetStateProperty.all(AppColors.textPrimary),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: AppColors.surfaceLight,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
     );
   }
 
   // Legacy support
-  static ThemeData get darkTheme => createTheme(NeonThemes.synthwave);
+  static ThemeData get darkTheme => createTheme(NeonThemes.synthwave84);
 }

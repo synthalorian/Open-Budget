@@ -124,6 +124,29 @@ class NeonThemes {
     description: 'A e s t h e t i c dreams in pink and cyan',
   );
 
+  /// Synthwave '84 – matches the creator's omarchy desktop theme.
+  /// Deep purple background, electric purple primary, hot pink expense,
+  /// yellow accent (the user specifically asked for yellow & pink).
+  static const NeonTheme synthwave84 = NeonTheme(
+    name: 'synthwave84',
+    displayName: 'SYNTHWAVE_84',
+    primary: Color(0xFF8F00FF),       // electric purple
+    secondary: Color(0xFF6E48AA),      // mid purple
+    accent: Color(0xFFFFF366),         // bright yellow – the user asked for yellow
+    income: Color(0xFF03EDF9),         // cyan
+    expense: Color(0xFFFF007F),        // hot pink – the user asked for pink
+    warning: Color(0xFFF3E70F),        // synthwave yellow
+    unlockRank: 'NEW_USER',
+    description: 'Deep purple grid — 84 bit synthwave',
+    background: Color(0xFF1A002A),     // deep purple (slightly lighter than #240037 for readability)
+    surface: Color(0xFF240037),        // deep purple (#240037)
+    surfaceLight: Color(0xFF3A0060),   // lighter purple
+    card: Color(0xFF2D0050),           // medium purple card
+    textPrimary: Color(0xFFFFF8E7),    // warm white
+    textSecondary: Color(0xFFD4C4E8),  // lavender
+    textMuted: Color(0xFF7A5A9A),      // muted purple
+  );
+
   // Plain Material dark — quiet palette, no neon glow vibes
   static const NeonTheme normalDark = NeonTheme(
     name: 'normal_dark',
@@ -168,6 +191,7 @@ class NeonThemes {
   );
 
   static const List<NeonTheme> all = [
+    synthwave84,
     synthwave,
     outrun,
     matrix,
@@ -181,7 +205,7 @@ class NeonThemes {
   static NeonTheme byName(String name) {
     return all.firstWhere(
       (t) => t.name == name,
-      orElse: () => synthwave,
+      orElse: () => synthwave84,
     );
   }
 }

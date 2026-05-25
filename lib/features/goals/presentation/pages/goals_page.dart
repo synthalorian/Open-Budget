@@ -138,7 +138,7 @@ class GoalsPage extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _buildProgressBar(goal.progress, color),
+            SynthwaveProgressBar(progress: goal.progress, color: color),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -201,37 +201,6 @@ class GoalsPage extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildProgressBar(double progress, Color color) {
-    return Stack(
-      children: [
-        Container(
-          height: 8,
-          decoration: BoxDecoration(
-            color: AppColors.surfaceLight,
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ),
-        FractionallySizedBox(
-          widthFactor: progress.clamp(0.0, 1.0),
-          child: Container(
-            height: 8,
-            decoration: BoxDecoration(
-              gradient:
-                  LinearGradient(colors: [color.withValues(alpha: 0.4), color]),
-              borderRadius: BorderRadius.circular(4),
-              boxShadow: [
-                BoxShadow(
-                    color: color.withValues(alpha: 0.5),
-                    blurRadius: 8,
-                    spreadRadius: 1),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 

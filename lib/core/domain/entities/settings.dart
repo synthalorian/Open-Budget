@@ -32,7 +32,7 @@ class AppSettings extends Equatable {
     this.enableVelocityWarnings = true,
     this.currencyCode = 'USD',
     this.biometricEnabled = false,
-    this.themeName = 'synthwave',
+    this.themeName = 'synthwave84',
     this.userName = 'SYNTH_X_84',
   });
 

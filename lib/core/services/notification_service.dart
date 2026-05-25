@@ -37,8 +37,8 @@ class NotificationService {
       channelDescription: 'Financial projection and budget alerts',
       importance: Importance.max,
       priority: Priority.high,
-      color: Color(0xFF9D50BB),
-      ledColor: Color(0xFF00F2FE),
+      color: Color(0xFF8F00FF),  // synthwave84 electric purple
+      ledColor: Color(0xFFFFF366),  // synthwave84 yellow
       ledOnMs: 1000,
       ledOffMs: 500,
     );
