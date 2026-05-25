@@ -19,6 +19,21 @@ class _ChangelogEntry {
 
 const _changelogEntries = <_ChangelogEntry>[
   _ChangelogEntry(
+    version: 'v1.1.5',
+    date: '2025-05-26',
+    features: [
+      '6 new languages: Français, Deutsch, Português, हिन्दी, 日本語, 中文',
+      'AnimatedListItem widget: staggered fade-in + slide-up list animations',
+      'ShimmerLoading widget: moving gradient loading placeholders',
+      'EnhancedEmptyState widget: pulsing animated empty states with action buttons',
+      'Hero transitions on transaction cards for fluid navigation',
+      'Animated list items across all pages (home, budget, goals, insights, categories, education, recurring)',
+      'Glow animation on NeonCard: pulsing neon border intensity',
+      'Comprehensive unit test suite: entities, localization service',
+      'Removed unused _buildEmptyState & dead imports — 0 analyzer warnings',
+    ],
+  ),
+  _ChangelogEntry(
     version: 'v1.1.4',
     date: '2025-05-25',
     features: [

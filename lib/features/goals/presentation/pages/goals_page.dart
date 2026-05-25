@@ -22,21 +22,16 @@ class GoalsPage extends ConsumerWidget {
       body: Container(
         decoration: BoxDecoration(gradient: AppColors.spaceGradient),
         child: goalsProgress.isEmpty && completedGoals.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.track_changes_rounded,
-                        size: 64, color: AppColors.textMuted),
-                    const SizedBox(height: 16),
-                    Text('NO TARGETS SET',
-                        style: AppTextStyles.headlineTitle
-                            .copyWith(color: AppColors.textMuted)),
-                    const SizedBox(height: 8),
-                    Text('Create a savings goal to start tracking',
-                        style: AppTextStyles.bodyMain
-                            .copyWith(color: AppColors.textMuted)),
-                  ],
+            ? EnhancedEmptyState(
+                icon: Icons.track_changes_rounded,
+                title: 'NO TARGETS SET',
+                subtitle: 'Create a savings goal to start tracking your financial objectives.',
+                color: AppColors.textMuted,
+                action: SynthwaveButton(
+                  label: 'CREATE FIRST TARGET',
+                  color: AppColors.accent,
+                  icon: Icons.add_rounded,
+                  onPressed: () => context.push('/goals/add'),
                 ),
               )
             : ListView(
@@ -48,8 +43,13 @@ class GoalsPage extends ConsumerWidget {
                         style: AppTextStyles.labelNeon
                             .copyWith(fontSize: 10)),
                     const SizedBox(height: 12),
-                    ...goalsProgress.map((gp) =>
-                        _buildGoalCard(context, ref, gp)),
+                    ...goalsProgress.map((gp) {
+                      final index = goalsProgress.indexOf(gp);
+                      return AnimatedListItem(
+                        index: index,
+                        child: _buildGoalCard(context, ref, gp),
+                      );
+                    }),
                   ],
                   if (completedGoals.isNotEmpty) ...[
                     const SizedBox(height: 24),
@@ -57,8 +57,13 @@ class GoalsPage extends ConsumerWidget {
                         style: AppTextStyles.labelNeon
                             .copyWith(fontSize: 10, color: AppColors.income)),
                     const SizedBox(height: 12),
-                    ...completedGoals.map((g) =>
-                        _buildCompletedCard(context, ref, g)),
+                    ...completedGoals.map((g) {
+                      final index = completedGoals.indexOf(g);
+                      return AnimatedListItem(
+                        index: index + goalsProgress.length,
+                        child: _buildCompletedCard(context, ref, g),
+                      );
+                    }),
                   ],
                   const SizedBox(height: 80),
                 ],
