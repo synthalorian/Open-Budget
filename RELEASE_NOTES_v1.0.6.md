@@ -26,4 +26,4 @@ SHA-256: `20e32f18444914b438f126109ec53cafa339cf75413442c3074b2235d6c13bf4`
 
 ---
 
-synth + synthclaw
+synth + synthshark
