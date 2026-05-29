@@ -15,4 +15,4 @@ SHA-256: `3b42633e8a981d50dd5995fdedb3542aef2da648451d7e6984339f5100897455`
 
 ---
 
-🎹🦞 synth + synthclaw
+🎹🦈 synth + synthshark

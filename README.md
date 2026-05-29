@@ -1,4 +1,4 @@
-# 🎹🦞 Open Budget
+# 🎹🦈 Open Budget
 
 A fully free, open source personal finance app that helps people budget, teaches money saving strategies, and tracks spending. Built with Flutter for iOS and Android.
 
