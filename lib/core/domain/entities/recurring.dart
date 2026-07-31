@@ -56,7 +56,7 @@ class RecurringTransaction extends Equatable {
       description: description ?? this.description,
       dayOfMonth: dayOfMonth ?? this.dayOfMonth,
       isActive: isActive ?? this.isActive,
-      createdAt: this.createdAt,
+      createdAt: createdAt,
       lastProcessed: lastProcessed ?? this.lastProcessed,
     );
   }

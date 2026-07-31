@@ -187,7 +187,7 @@ class MainShell extends ConsumerWidget {
         body: Stack(
           children: [
             // Synthwave grid background
-            SynthwaveGrid(),
+            const SynthwaveGrid(),
             child,
           ],
         ),

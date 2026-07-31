@@ -159,7 +159,7 @@ class CloudSyncPage extends ConsumerWidget {
                                 if (context.mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('DATA_RESTORED_SUCCESSFULLY'),
+                                      content: const Text('DATA_RESTORED_SUCCESSFULLY'),
                                       backgroundColor: AppColors.income,
                                     ),
                                   );

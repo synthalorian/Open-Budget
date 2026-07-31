@@ -75,7 +75,7 @@ class BudgetPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddBudgetSheet(context, ref, db),
         backgroundColor: AppColors.primary,
-        child: Icon(Icons.add_rounded, size: 32),
+        child: const Icon(Icons.add_rounded, size: 32),
       ),
     );
   }

@@ -487,7 +487,7 @@ class SettingsPage extends ConsumerWidget {
   }
 
   Widget _buildCurrencySelector(BuildContext context, SettingsNotifier notifier, AppSettings settings) {
-    final currencies = AppConstants.supportedCurrencies;
+    const currencies = AppConstants.supportedCurrencies;
     return _buildSettingsItem(
       context, 
       'CURRENCY_PROTOCOL', 

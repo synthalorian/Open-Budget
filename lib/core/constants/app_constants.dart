@@ -54,7 +54,7 @@ class AppConstants {
   // Default categories
   static List<Category> get defaultCategories => [
     // Expense categories
-    Category(
+    const Category(
       id: 'cat_food',
       name: 'Food & Dining',
       iconName: 'restaurant',
@@ -63,7 +63,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 0,
     ),
-    Category(
+    const Category(
       id: 'cat_transport',
       name: 'Transportation',
       iconName: 'directions_car',
@@ -72,7 +72,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 1,
     ),
-    Category(
+    const Category(
       id: 'cat_shopping',
       name: 'Shopping',
       iconName: 'shopping_bag',
@@ -81,7 +81,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 2,
     ),
-    Category(
+    const Category(
       id: 'cat_bills',
       name: 'Bills & Utilities',
       iconName: 'receipt_long',
@@ -90,7 +90,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 3,
     ),
-    Category(
+    const Category(
       id: 'cat_entertainment',
       name: 'Entertainment',
       iconName: 'movie',
@@ -99,7 +99,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 4,
     ),
-    Category(
+    const Category(
       id: 'cat_health',
       name: 'Health & Fitness',
       iconName: 'fitness_center',
@@ -108,7 +108,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 5,
     ),
-    Category(
+    const Category(
       id: 'cat_education',
       name: 'Education',
       iconName: 'school',
@@ -117,7 +117,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 6,
     ),
-    Category(
+    const Category(
       id: 'cat_personal',
       name: 'Personal Care',
       iconName: 'spa',
@@ -126,7 +126,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 7,
     ),
-    Category(
+    const Category(
       id: 'cat_home',
       name: 'Home & Garden',
       iconName: 'home',
@@ -135,7 +135,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 8,
     ),
-    Category(
+    const Category(
       id: 'cat_gifts',
       name: 'Gifts & Donations',
       iconName: 'card_giftcard',
@@ -144,7 +144,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 9,
     ),
-    Category(
+    const Category(
       id: 'cat_other_expense',
       name: 'Other',
       iconName: 'more_horiz',
@@ -155,7 +155,7 @@ class AppConstants {
     ),
     
     // Income categories
-    Category(
+    const Category(
       id: 'cat_salary',
       name: 'Salary',
       iconName: 'work',
@@ -164,7 +164,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 0,
     ),
-    Category(
+    const Category(
       id: 'cat_freelance',
       name: 'Freelance',
       iconName: 'laptop',
@@ -173,7 +173,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 1,
     ),
-    Category(
+    const Category(
       id: 'cat_investments',
       name: 'Investments',
       iconName: 'trending_up',
@@ -182,7 +182,7 @@ class AppConstants {
       isSystem: true,
       sortOrder: 2,
     ),
-    Category(
+    const Category(
       id: 'cat_other_income',
       name: 'Other Income',
       iconName: 'attach_money',

@@ -84,7 +84,7 @@ void main() {
         period: BudgetPeriod.monthly,
         type: BudgetType.total,
         startDate: now,
-        categoryIds: ['food', 'transport', 'entertainment'],
+        categoryIds: const ['food', 'transport', 'entertainment'],
         createdAt: now,
       );
       final json = b.toJson();
