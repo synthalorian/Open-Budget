@@ -181,7 +181,7 @@ class ChangelogPage extends StatelessWidget {
             const SizedBox(height: 8),
             Center(
               child: Text(
-                'BY SYNTH AND SYNTHSHARK 🎹🦈',
+                'BY SYNTH AND SYNTHSHARK 🎹🦞',
                 style: AppTextStyles.labelNeon.copyWith(
                   fontSize: 10,
                   color: AppColors.textMuted,

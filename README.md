@@ -1,3 +1,5 @@
+![GPLv3](https://img.shields.io/badge/License-GPLv3-blue) ![Flutter](https://img.shields.io/badge/Flutter-3.4%2B-02569B)
+
 # 🎹🦈 Open Budget
 
 A fully free, open source personal finance app that helps people budget, teaches money saving strategies, and tracks spending. Built with Flutter for iOS and Android.
