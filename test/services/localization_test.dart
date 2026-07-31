@@ -40,7 +40,6 @@ void main() {
     });
 
     test('Spanish translations are distinct from English', () {
-      final en = AppLocalizations('en');
       final es = AppLocalizations('es');
       // Check a few keys that should differ
       expect(es.t('nav_home'), equals('INICIO'));
@@ -49,14 +48,14 @@ void main() {
 
     test('supportedLocales contains all 8 locales', () {
       expect(supportedLocales.length, 8);
-      expect(supportedLocales, contains(Locale('en', 'US')));
-      expect(supportedLocales, contains(Locale('es', 'ES')));
-      expect(supportedLocales, contains(Locale('fr', 'FR')));
-      expect(supportedLocales, contains(Locale('de', 'DE')));
-      expect(supportedLocales, contains(Locale('pt', 'BR')));
-      expect(supportedLocales, contains(Locale('hi', 'IN')));
-      expect(supportedLocales, contains(Locale('ja', 'JP')));
-      expect(supportedLocales, contains(Locale('zh', 'CN')));
+      expect(supportedLocales, contains(const Locale('en', 'US')));
+      expect(supportedLocales, contains(const Locale('es', 'ES')));
+      expect(supportedLocales, contains(const Locale('fr', 'FR')));
+      expect(supportedLocales, contains(const Locale('de', 'DE')));
+      expect(supportedLocales, contains(const Locale('pt', 'BR')));
+      expect(supportedLocales, contains(const Locale('hi', 'IN')));
+      expect(supportedLocales, contains(const Locale('ja', 'JP')));
+      expect(supportedLocales, contains(const Locale('zh', 'CN')));
     });
 
     test('languageNames contains all 8 languages', () {
@@ -71,7 +70,6 @@ void main() {
 
 /// Collect all keys from the English translations map.
 Set<String> _getAllKeys() {
-  final en = AppLocalizations('en');
   // Access the static _strings map via reflection isn't possible,
   // so we test known keys.
   return {

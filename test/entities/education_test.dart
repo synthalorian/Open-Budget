@@ -53,7 +53,7 @@ void main() {
 
   group('UserProgress', () {
     test('creates with default values', () {
-      final p = UserProgress(contentId: 'e1');
+      const p = UserProgress(contentId: 'e1');
       expect(p.contentId, 'e1');
       expect(p.isCompleted, false);
       expect(p.isBookmarked, false);
@@ -61,7 +61,7 @@ void main() {
     });
 
     test('copyWith works', () {
-      final p = UserProgress(contentId: 'e1');
+      const p = UserProgress(contentId: 'e1');
       final updated = p.copyWith(isCompleted: true, progressPercent: 100);
       expect(updated.isCompleted, true);
       expect(updated.progressPercent, 100);

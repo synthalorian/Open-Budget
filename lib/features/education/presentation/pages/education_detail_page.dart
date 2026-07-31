@@ -83,7 +83,7 @@ class EducationDetailPage extends ConsumerWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('LEARNING_PROTOCOL_COMPLETE: RANK_SYNCHRONIZED'),
+                            content: const Text('LEARNING_PROTOCOL_COMPLETE: RANK_SYNCHRONIZED'),
                             backgroundColor: AppColors.income,
                           ),
                         );
