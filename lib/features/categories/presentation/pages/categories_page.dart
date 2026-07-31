@@ -51,7 +51,7 @@ class CategoriesPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showCreateCategorySheet(context, ref),
         backgroundColor: AppColors.primary,
-        child: Icon(Icons.add_rounded, color: Colors.white, size: 32),
+        child: const Icon(Icons.add_rounded, color: Colors.white, size: 32),
       ),
     );
   }

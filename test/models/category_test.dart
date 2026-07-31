@@ -4,7 +4,7 @@ import 'package:open_budget/core/domain/entities/category.dart';
 void main() {
   group('Category', () {
     test('creates with required fields', () {
-      final c = Category(
+      const c = Category(
         id: 'test',
         name: 'Food',
         iconName: 'restaurant',
@@ -17,7 +17,7 @@ void main() {
     });
 
     test('system category flag', () {
-      final c = Category(
+      const c = Category(
         id: 'sys',
         name: 'System',
         iconName: 'settings',
@@ -29,7 +29,7 @@ void main() {
     });
 
     test('copyWith works', () {
-      final c = Category(
+      const c = Category(
         id: 'test',
         name: 'Original',
         iconName: 'restaurant',

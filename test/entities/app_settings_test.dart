@@ -4,7 +4,7 @@ import 'package:open_budget/core/domain/entities/settings.dart';
 void main() {
   group('AppSettings', () {
     test('creates with default values', () {
-      final s = const AppSettings();
+      const s = AppSettings();
       expect(s.enableCollisionAlerts, true);
       expect(s.enableSystemCriticalAlerts, true);
       expect(s.enableVelocityWarnings, true);
@@ -39,7 +39,7 @@ void main() {
     });
 
     test('copyWith updates only specified fields', () {
-      final s = const AppSettings(userName: 'USER_1', themeName: 'dark');
+      const s = AppSettings(userName: 'USER_1', themeName: 'dark');
       final updated = s.copyWith(userName: 'USER_2');
       expect(updated.userName, 'USER_2');
       expect(updated.themeName, 'dark');
