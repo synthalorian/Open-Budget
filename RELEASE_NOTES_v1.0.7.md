@@ -28,4 +28,4 @@ SHA-256: `fce1df3d7f08094cba17967b06c3fabb3701591547e371941de51c623bc1e5df`
 
 ---
 
-synth + synthshark
+synthalorian 🎹🤺 + synthshark
