@@ -14,7 +14,7 @@ Full explanation for posterity:
 ## Fixes
 
 - `_showAddBudgetSheet` - typed `db` as `DatabaseService` (not `dynamic`) and `categories` as `List<Category>` explicitly. Also added explicit generic args on the inner `DropdownMenuItem` constructor calls, belt-and-suspenders.
-- `_showAddRecurringSheet` - same latent bug, same fix (cast `.values` as `Iterable<Category>` up-front). Recurring apparently dodged the crash only because synthalorian 🎹🤺 never triggered the exact code path.
+- `_showAddRecurringSheet` - same latent bug, same fix (cast `.values` as `Iterable<Category>` up-front). Recurring apparently dodged the crash only because synth never triggered the exact code path.
 - Removed all v1.0.4/v1.0.5 diagnostic scaffolding: red background, colored A/B/C/D/E strips, SnackBar. Sheet is back to real production UI.
 - Global error catcher and CORE CONFIG -> VIEW_LAST_ERROR row remain - they are a keeper.
 
@@ -26,4 +26,4 @@ SHA-256: `20e32f18444914b438f126109ec53cafa339cf75413442c3074b2235d6c13bf4`
 
 ---
 
-synthalorian 🎹🤺 + synthshark
+synth + synthshark

@@ -47,6 +47,6 @@ Flutter 3.4+ · Riverpod · Hive · Go Router · FL Chart
 
 ---
 
-Built by synthalorian 🎹🤺 and synthshark. 🎹🦈
+Built by synth and synthshark. 🎹🦈
 
 This is the wave.
