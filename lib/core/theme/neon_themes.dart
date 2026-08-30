@@ -46,6 +46,27 @@ class NeonTheme {
 }
 
 class NeonThemes {
+  /// Blackshield — blood, steel, and bone. Gothic-warrior default.
+  static const NeonTheme blackshield = NeonTheme(
+    name: 'blackshield',
+    displayName: 'BLACKSHIELD',
+    primary: Color(0xFFC1121F),        // blood
+    secondary: Color(0xFF5B7FA6),      // steel-blue
+    accent: Color(0xFFC1121F),         // blood accent
+    income: Color(0xFF6A994E),         // field-green
+    expense: Color(0xFFC1121F),        // blood
+    warning: Color(0xFFC9A227),        // war-gold
+    unlockRank: 'NEW_USER',
+    description: 'Blood, steel, and bone — gothic warrior',
+    background: Color(0xFF0D0D11),     // void
+    surface: Color(0xFF16161C),        // steel
+    surfaceLight: Color(0xFF1A1A20),   // steel-light
+    card: Color(0xFF16161C),           // steel
+    textPrimary: Color(0xFFD8D3C8),    // bone
+    textSecondary: Color(0xFFD8D3C8),  // bone
+    textMuted: Color(0xFF8A8F98),      // ash
+  );
+
   static const NeonTheme synthwave = NeonTheme(
     name: 'synthwave',
     displayName: 'SYNTHWAVE',
@@ -191,6 +212,7 @@ class NeonThemes {
   );
 
   static const List<NeonTheme> all = [
+    blackshield,
     synthwave84,
     synthwave,
     outrun,
@@ -205,7 +227,7 @@ class NeonThemes {
   static NeonTheme byName(String name) {
     return all.firstWhere(
       (t) => t.name == name,
-      orElse: () => synthwave84,
+      orElse: () => blackshield,
     );
   }
 }

@@ -23,7 +23,7 @@ class AppColors {
   static Color get textMuted => currentTheme.textMuted;
 
   // Global theme state holder (internal use)
-  static NeonTheme currentTheme = NeonThemes.synthwave84;
+  static NeonTheme currentTheme = NeonThemes.blackshield;
 
   static List<BoxShadow> get primaryGlow => [
     BoxShadow(
@@ -259,5 +259,5 @@ class AppTheme {
   }
 
   // Legacy support
-  static ThemeData get darkTheme => createTheme(NeonThemes.synthwave84);
+  static ThemeData get darkTheme => createTheme(NeonThemes.blackshield);
 }

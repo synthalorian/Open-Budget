@@ -21,11 +21,11 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     final velocity = _db.settings.get('enableVelocityWarnings') as bool? ?? true;
     final currency = _db.settings.get('currencyCode') as String? ?? 'USD';
     final biometric = _db.settings.get('biometricEnabled') as bool? ?? false;
-    final themeName = _db.settings.get('themeName') as String? ?? 'synthwave84';
+    final themeName = _db.settings.get('themeName') as String? ?? 'blackshield';
     final userName = _db.settings.get('userName') as String? ?? 'SYNTH_X_84';
     final crt = _db.settings.get('crtEffectEnabled') as bool? ?? true;
     final autoSched = _db.settings.get('autoThemeSchedule') as bool? ?? false;
-    final autoDark = _db.settings.get('autoThemeDark') as String? ?? 'synthwave84';
+    final autoDark = _db.settings.get('autoThemeDark') as String? ?? 'blackshield';
     final autoLight = _db.settings.get('autoThemeLight') as String? ?? 'normal_light';
     final haptic = _db.settings.get('hapticFeedbackEnabled') as bool? ?? true;
     final sound = _db.settings.get('soundEffectsEnabled') as bool? ?? true;
