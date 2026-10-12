@@ -10,7 +10,7 @@ Fill in the [bracketed] sections. Update screenshots/graphics after final UI pas
 - **Package ID (Android):** `com.openbudget.open_budget`
 - **Bundle ID (iOS):** `com.openbudget.openBudget`
 - **Developer:** synth (Carter / synth)
-- **Contact email:** synthalorian@gmail.com
+- **Contact email:** blackshield@mail.grokbot.com
 - **Privacy URL:** [https://synthalorian.com/open-budget/privacy] *(need to draft + host)*
 - **Support URL:** [https://synthalorian.com/open-budget/support]
 
