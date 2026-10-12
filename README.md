@@ -1,4 +1,4 @@
-![Apache-2.0](https://img.shields.io/badge/License-Apache-2.0-blue) ![Flutter](https://img.shields.io/badge/Flutter-3.4%2B-02569B)
+![Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue) ![Flutter](https://img.shields.io/badge/Flutter-3.4%2B-02569B)
 
 # 🎹🦈 Open Budget
 
@@ -140,7 +140,7 @@ Contributions are welcome! This is an open source project aimed at helping peopl
 
 ## 📄 License
 
-This project is licensed under the MIT License - see LICENSE for details.
+This project is licensed under the Apache License 2.0 - see LICENSE for details.
 
 ## 🙏 Acknowledgments
 
