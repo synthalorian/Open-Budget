@@ -1,5 +1,10 @@
 ![Open-Budget](.github/preview.png)
 
+<p align="center">
+  <img src=".github/assets/synthalorian-idle-128.gif" width="128" height="128" alt="The synthalorian: a pixel-art figure in a black helmet with a pink T-visor, idling">
+</p>
+<p align="center"><em>Free, open-source budgeting for iOS and Android. Every dollar gets a job, every chart gets a glow.</em></p>
+
 ![Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue) ![Flutter](https://img.shields.io/badge/Flutter-3.4%2B-02569B)
 
 # 🎹🦈 Open Budget
@@ -161,3 +166,11 @@ This project is licensed under the Apache License 2.0 - see LICENSE for details.
 If this project saved you time, solved a problem, or just made your day a little more neon, you can fuel the next one:
 
 [![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://buymeacoffee.com/synthalorian)
+
+---
+
+<p align="center">
+  <img src=".github/assets/synthalorian-idle-128.gif" width="32" height="32" alt="The synthalorian sprite"><br>
+  <sub>Built by <a href="https://github.com/synthalorian">the synthalorian</a></sub>
+  <br><sub>AI-assisted art: the banner image and app icon in this README were made with AI image tools. The synthalorian sprite is code-drawn pixel art.</sub>
+</p>
