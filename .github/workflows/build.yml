@@ -50,7 +50,7 @@ jobs:
 
       - name: Create Release
         if: github.event_name == 'push' && (github.ref_name == 'master' || github.ref_name == 'main') && (github.event.inputs.create_release == 'true' || github.event_name == 'workflow_dispatch')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ github.run_number }}
           name: Release v${{ github.run_number }}
